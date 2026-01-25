@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { LayoutDashboard, Users, FileText, Settings, Menu } from "lucide-react";
+import { useState, useEffect } from "react";
+import { LayoutDashboard, Users, FileText, Settings, Menu, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,27 +12,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { API_URL, getAuthHeader } from "@/config/api";
+import { toast } from "sonner";
 
 const navItems = [
   { name: "Dashboard", icon: LayoutDashboard, href: "#dashboard" },
   { name: "Leads", icon: Users, href: "#leads" },
   { name: "Blog", icon: FileText, href: "#blog" },
   { name: "Settings", icon: Settings, href: "#settings" },
-];
-
-const stats = [
-  { title: "Total Leads", value: "1,284", change: "+12.5%" },
-  { title: "Active Projects", value: "23", change: "+3.2%" },
-  { title: "Conversion Rate", value: "24.8%", change: "+2.1%" },
-];
-
-const leads = [
-  { id: 1, name: "Sarah Johnson", email: "sarah@company.com", date: "2024-01-15", status: "New" },
-  { id: 2, name: "Michael Chen", email: "m.chen@startup.io", date: "2024-01-14", status: "Contacted" },
-  { id: 3, name: "Emily Rodriguez", email: "emily.r@enterprise.com", date: "2024-01-13", status: "Closed" },
-  { id: 4, name: "David Kim", email: "david.kim@tech.co", date: "2024-01-12", status: "New" },
-  { id: 5, name: "Jessica Taylor", email: "j.taylor@media.net", date: "2024-01-11", status: "Contacted" },
-  { id: 6, name: "Robert Williams", email: "r.williams@corp.com", date: "2024-01-10", status: "Closed" },
 ];
 
 const getStatusVariant = (status: string) => {
@@ -51,6 +39,55 @@ const getStatusVariant = (status: string) => {
 const AdminDashboard = () => {
   const [activeNav, setActiveNav] = useState("Dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [leads, setLeads] = useState<any[]>([]);
+  const [stats, setStats] = useState([
+    { title: "Total Leads", value: "0", change: "0%" },
+    { title: "Active Projects", value: "0", change: "0%" },
+    // { title: "Conversion Rate", value: "0%", change: "0%" },
+  ]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const headers = getAuthHeader();
+        const leadsRes = await fetch(`${API_URL}/leads`, { headers });
+        if (leadsRes.ok) {
+          const leadsData = await leadsRes.json();
+          setLeads(leadsData);
+          setStats(prev => prev.map(stat =>
+            stat.title === "Total Leads" ? { ...stat, value: leadsData.length.toString() } : stat
+          ));
+        } else {
+          if (leadsRes.status === 401) {
+            localStorage.removeItem("token");
+            navigate("/login");
+          }
+        }
+
+        // Fetch projects count - assuming endpoint exists or needed
+        // const projectsRes = await fetch(`${API_URL}/projects`, { headers });
+        // ...
+      } catch (error) {
+        console.error("Failed to fetch data", error);
+        toast.error("Failed to load dashboard data");
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <div className="min-h-screen flex w-full bg-background">
@@ -103,6 +140,21 @@ const AdminDashboard = () => {
           </ul>
         </nav>
 
+        {/* Logout Button */}
+        <div className="p-3">
+          <Button
+            variant="ghost"
+            className={cn(
+              "w-full flex items-center gap-3 text-white/70 hover:bg-white/10 hover:text-white justify-start",
+              !sidebarOpen && "justify-center px-0"
+            )}
+            onClick={handleLogout}
+          >
+            <LogOut className="h-5 w-5" />
+            {sidebarOpen && <span>Logout</span>}
+          </Button>
+        </div>
+
         {/* Footer */}
         {sidebarOpen && (
           <div className="p-4 border-t border-white/10">
@@ -142,9 +194,9 @@ const AdminDashboard = () => {
                     <span className="text-3xl font-display font-bold text-foreground">
                       {stat.value}
                     </span>
-                    <span className="text-sm font-medium text-emerald-600">
+                    {/* <span className="text-sm font-medium text-emerald-600">
                       {stat.change}
-                    </span>
+                    </span> */}
                   </div>
                 </CardContent>
               </Card>
@@ -170,7 +222,7 @@ const AdminDashboard = () => {
                 </TableHeader>
                 <TableBody>
                   {leads.map((lead) => (
-                    <TableRow key={lead.id} className="border-border">
+                    <TableRow key={lead._id} className="border-border">
                       <TableCell className="font-medium text-foreground">
                         {lead.name}
                       </TableCell>
@@ -178,7 +230,7 @@ const AdminDashboard = () => {
                         {lead.email}
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        {lead.date}
+                        {new Date(lead.createdAt).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
                         <Badge
@@ -190,6 +242,13 @@ const AdminDashboard = () => {
                       </TableCell>
                     </TableRow>
                   ))}
+                  {leads.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center text-muted-foreground h-24">
+                        No leads found.
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </CardContent>

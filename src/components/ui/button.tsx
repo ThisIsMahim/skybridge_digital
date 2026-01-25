@@ -32,14 +32,47 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
+
+import { useLiquidDistortion } from "@/hooks/useLiquidDistortion";
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+
+    // We only apply fluid distortion to standard buttons to avoid slot complexity
+    const { style, props: eventProps, LiquidFilter } = useLiquidDistortion();
+    const { onMouseEnter, onMouseLeave } = eventProps;
+
+    if (asChild) {
+      return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+    }
+
+    const mergedMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+      props.onMouseEnter?.(e);
+      onMouseEnter();
+    };
+
+    const mergedMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+      props.onMouseLeave?.(e);
+      onMouseLeave();
+    };
+
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+        style={{ ...props.style, ...style }}
+        onMouseEnter={mergedMouseEnter}
+        onMouseLeave={mergedMouseLeave}
+      >
+        {LiquidFilter}
+        {props.children}
+      </Comp>
+    );
   },
 );
 Button.displayName = "Button";

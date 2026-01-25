@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import skybridgeLogo from "@/assets/skybridge_logo_v3.png";
+import { NavLink } from "./NavLink";
+import { Button } from "./ui/button";
+import { BookingModal } from "./BookingModal";
+import { LiquidDistortion } from "./LiquidDistortion";
 
 const navLinks = [
   { name: "Services", href: "#services" },
@@ -40,31 +44,43 @@ const Navbar = () => {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${!isVisible ? "-translate-y-full" : "translate-y-0"
-          } ${isScrolled ? "bg-background/80 backdrop-blur-xl" : "bg-transparent"
+          } ${isScrolled ? "bg-background/40 backdrop-blur-xl rounded-b-10" : "bg-transparent"
           }`}
       >
         <div className="w-full px-6 lg:px-12 xl:px-20">
           <div className="flex items-center justify-between h-20 lg:h-24">
             {/* Logo */}
             <a href="#" className="flex items-center">
-              <img
-                src={skybridgeLogo}
-                alt="Skybridge Digital"
-                className="h-8 lg:h-32 w-auto object-contain brightness-0 invert"
-              />
+              <LiquidDistortion>
+                <img
+                  src={skybridgeLogo}
+                  alt="Skybridge Digital"
+                  className="h-8 lg:h-32 w-auto object-contain brightness-0 invert"
+                />
+              </LiquidDistortion>
             </a>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-12">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="ripple-link px-4 py-2 text-sm uppercase tracking-widest text-foreground/70 hover:text-foreground transition-all duration-300 rounded-full"
+            <div className="hidden md:flex items-center gap-8">
+              <div className="flex items-center gap-6">
+                {navLinks.map((link) => (
+                  <NavLink
+                    key={link.name}
+                    to={link.href}
+                    className="text-base font-medium tracking-wide"
+                  >
+                    {link.name}
+                  </NavLink>
+                ))}
+              </div>
+
+              <BookingModal>
+                <Button
+                  className="rounded-full px-6 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_-5px_hsl(var(--primary))]"
                 >
-                  {link.name}
-                </a>
-              ))}
+                  Book a Call
+                </Button>
+              </BookingModal>
             </div>
 
             {/* Mobile Menu Toggle */}
@@ -96,7 +112,7 @@ const Navbar = () => {
                 }`}
               style={{ transitionDelay: `${index * 75}ms` }}
             >
-              {link.name}
+              <LiquidDistortion>{link.name}</LiquidDistortion>
             </a>
           ))}
         </div>

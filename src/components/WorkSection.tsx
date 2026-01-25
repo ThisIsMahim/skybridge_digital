@@ -23,7 +23,7 @@ const projects = [
 
 const WorkSection = () => {
   return (
-    <section id="work" className="min-h-screen py-32 lg:py-48">
+    <section id="work" className="min-h-screen py-24">
       <div className="w-full px-6 lg:px-12 xl:px-20">
         {/* Section Header */}
         <div className="mb-24 lg:mb-32 space-y-6">

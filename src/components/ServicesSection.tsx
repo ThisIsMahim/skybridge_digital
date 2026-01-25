@@ -23,7 +23,7 @@ const services = [
 
 const ServicesSection = () => {
   return (
-    <section id="services" className="min-h-screen py-32 lg:py-48 relative">
+    <section id="services" className="min-h-screen py-24 relative">
       <div className="w-full px-6 lg:px-12 xl:px-20">
         {/* Section Header */}
         <div className="mb-24 lg:mb-32 space-y-6">

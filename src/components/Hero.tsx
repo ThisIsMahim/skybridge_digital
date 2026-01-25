@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { LiquidDistortion } from "./LiquidDistortion";
+import Hero3DScene from "./Hero3DScene";
 
 const Hero = () => {
   return (
@@ -12,8 +14,11 @@ const Hero = () => {
         }}
       />
 
+      {/* 3D Scene Background/Foreground */}
+      <Hero3DScene />
+
       {/* Full-width content - no container */}
-      <div className="w-full px-6 lg:px-12 xl:px-20 py-32 relative z-10">
+      <div className="w-full px-6 lg:px-12 xl:px-20 py-48 relative z-10">
         <div className="space-y-8 opacity-0 animate-fade-in">
           {/* Massive headline - viewport-based sizing */}
           <h1 className="font-display text-[12vw] sm:text-[10vw] lg:text-[9vw] font-extrabold leading-[0.85] tracking-tighter text-foreground uppercase">
@@ -39,12 +44,14 @@ const Hero = () => {
               Start Project
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-2" />
             </Button>
-            <a
-              href="#work"
-              className="text-foreground hover:text-accent transition-colors text-sm uppercase tracking-widest"
-            >
-              View Work
-            </a>
+            <LiquidDistortion>
+              <a
+                href="#work"
+                className="text-foreground hover:text-accent transition-colors text-sm uppercase tracking-widest"
+              >
+                View Work
+              </a>
+            </LiquidDistortion>
           </div>
         </div>
       </div>

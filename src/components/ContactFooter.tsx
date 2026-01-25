@@ -59,21 +59,51 @@ const ContactFooter = () => {
     }
 
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
+    try {
+      const fullMessage = `Project Type: ${formData.projectType}\n\n${formData.message}`;
 
-    setFormData({ name: "", email: "", projectType: "", message: "" });
-    setIsSubmitting(false);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: fullMessage,
+          isBookingRequest: false,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast({
+          title: "Message sent!",
+          description: "We'll get back to you within 24 hours.",
+        });
+        setFormData({ name: "", email: "", projectType: "", message: "" });
+      } else {
+        toast({
+          title: "Failed to send message",
+          description: data.message || "Please try again later.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section id="contact" className="relative">
       {/* Main Contact Section */}
-      <div className="min-h-screen py-32 lg:py-48 relative">
+      <div className="min-h-screen py-24 relative">
         <div className="w-full px-6 lg:px-12 xl:px-20">
           <div className="grid lg:grid-cols-2 gap-24 lg:gap-32 items-start">
             {/* Left Column - Header */}
