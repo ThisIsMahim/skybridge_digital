@@ -132,7 +132,7 @@ const ServiceCard = ({ service, index, range, targetScale, progress }: ServiceCa
         </div>
 
         {/* Right Visual */}
-        <div className="w-full md:w-1/2 relative h-full rounded-2xl overflow-hidden bg-zinc-900/5 dark:bg-white/5">
+        <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-0 md:h-full rounded-2xl overflow-hidden bg-zinc-900/5 dark:bg-white/5">
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.div
               style={{ scale: imageScale }}
@@ -142,6 +142,7 @@ const ServiceCard = ({ service, index, range, targetScale, progress }: ServiceCa
                 src={service.image}
                 alt={service.title}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </motion.div>
           </div>

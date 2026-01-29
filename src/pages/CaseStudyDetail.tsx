@@ -1,0 +1,215 @@
+
+import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
+import Navbar from "@/components/Navbar";
+import { caseStudies } from "@/data/caseStudies";
+import { ArrowLeft, Quote, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
+
+const CaseStudyDetail = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const study = caseStudies.find((s) => s.id === id);
+
+    if (!study) {
+        return <Navigate to="/case-studies" replace />;
+    }
+
+    return (
+        <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
+            <Navbar />
+
+            <main className="pt-24 lg:pt-32 pb-20">
+                {/* Back Button */}
+                <div className="container mx-auto px-6 lg:px-12 xl:px-20 mb-8">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-medium appearance-none bg-transparent border-0 cursor-pointer"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        Back to All Work
+                    </button>
+                </div>
+
+                {/* Hero / Header */}
+                <header className="container mx-auto px-6 lg:px-12 xl:px-20 mb-16 lg:mb-24">
+                    <div className="max-w-4xl">
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="flex items-center gap-3 mb-6"
+                        >
+                            <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-bold uppercase tracking-wider">
+                                {study.industry}
+                            </span>
+                            <span className="text-muted-foreground font-medium">|</span>
+                            <span className="text-muted-foreground font-medium uppercase tracking-wider text-sm">
+                                {study.client}
+                            </span>
+                        </motion.div>
+
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="font-display text-4xl lg:text-6xl font-extrabold tracking-tight mb-8 leading-[1.1]"
+                        >
+                            {study.title}
+                        </motion.h1>
+
+                        {/* Stats / Metrics Bar */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="inline-flex flex-col sm:flex-row gap-8 bg-card border border-border/50 p-6 rounded-2xl"
+                        >
+                            <div>
+                                <span className="block text-sm text-muted-foreground uppercase tracking-wide mb-1">Key Outcome</span>
+                                <span className="block text-3xl font-bold text-primary">{study.metric}</span>
+                            </div>
+                            <div className="hidden sm:block w-px bg-border/50" />
+                            <div>
+                                <span className="block text-sm text-muted-foreground uppercase tracking-wide mb-1">Service</span>
+                                <span className="block text-xl font-semibold">{study.industry}</span>
+                            </div>
+                        </motion.div>
+                    </div>
+                </header>
+
+                {/* Main Content Image */}
+                <div className="w-full h-[40vh] lg:h-[60vh] bg-muted mb-16 lg:mb-24 overflow-hidden">
+                    <img
+                        src={study.image}
+                        alt="Project visualization"
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+
+                {/* Content Sections */}
+                <div className="container mx-auto px-6 lg:px-12 xl:px-20">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+
+                        {/* Sidebar / Info */}
+                        <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-32 h-fit">
+                            <div className="bg-secondary/20 p-8 rounded-3xl border border-secondary/50">
+                                <h3 className="font-display text-xl font-bold mb-4">Project Overview</h3>
+                                <p className="text-muted-foreground leading-relaxed mb-6">
+                                    {study.overview}
+                                </p>
+                                <div className="space-y-4">
+                                    <div className="flex flex-col">
+                                        <span className="text-xs font-bold uppercase text-muted-foreground mb-1">Client</span>
+                                        <span className="font-medium">{study.client}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Testimonial */}
+                            <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 relative overflow-hidden">
+                                <Quote className="absolute top-4 right-4 w-12 h-12 text-primary/10 rotate-180" />
+                                <blockquote className="relative z-10">
+                                    <p className="text-lg italic font-medium mb-6 text-foreground/80">
+                                        "{study.testimonial.quote}"
+                                    </p>
+                                    <footer>
+                                        <strong className="block font-bold text-foreground">{study.testimonial.author}</strong>
+                                        <span className="text-sm text-muted-foreground">{study.testimonial.role}</span>
+                                    </footer>
+                                </blockquote>
+                            </div>
+                        </aside>
+
+                        {/* Main Body */}
+                        <div className="lg:col-span-8 space-y-16 lg:space-y-24">
+
+                            {/* The Problem */}
+                            <section>
+                                <h2 className="font-display text-3xl font-bold mb-6 flex items-center gap-3">
+                                    <span className="w-12 h-1 rounded-full bg-destructive/70" />
+                                    The Pain Point
+                                </h2>
+                                <h3 className="text-2xl font-medium mb-4 text-foreground/90">
+                                    {study.challenge}
+                                </h3>
+                                <p className="text-lg text-muted-foreground leading-relaxed">
+                                    {study.problemDetail}
+                                </p>
+                            </section>
+
+                            {/* Our Approach */}
+                            <section>
+                                <h2 className="font-display text-3xl font-bold mb-6 flex items-center gap-3">
+                                    <span className="w-12 h-1 rounded-full bg-primary" />
+                                    Our Strategy
+                                </h2>
+                                <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                                    {study.approach}
+                                </p>
+                                {/* Simulated Checkpoints/Steps */}
+                                <div className="space-y-4">
+                                    <div className="flex items-start gap-3">
+                                        <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                                        <div>
+                                            <h4 className="font-bold">Deep Dive Analysis</h4>
+                                            <p className="text-muted-foreground">Understanding the core bottlenecks.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                                        <div>
+                                            <h4 className="font-bold">Strategic Implementation</h4>
+                                            <p className="text-muted-foreground">{study.solution}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                                        <div>
+                                            <h4 className="font-bold">Continuous Optimization</h4>
+                                            <p className="text-muted-foreground">Monitoring metrics and adjusting for maximum impact.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* The Outcome */}
+                            <section>
+                                <h2 className="font-display text-3xl font-bold mb-6 flex items-center gap-3">
+                                    <span className="w-12 h-1 rounded-full bg-green-500" />
+                                    The Win
+                                </h2>
+                                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                                    {study.outcome}
+                                </p>
+                                <div className="bg-card border border-border p-8 rounded-2xl text-center">
+                                    <span className="block text-sm font-bold uppercase tracking-wider text-muted-foreground mb-2">Final Impact</span>
+                                    <span className="block text-5xl lg:text-7xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">
+                                        {study.metric}
+                                    </span>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+
+                    {/* Final CTA */}
+                    <div className="mt-24 pt-12 border-t border-border">
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-secondary/30 p-12 rounded-3xl">
+                            <div>
+                                <h3 className="text-3xl font-bold mb-2">Ready to be our next success story?</h3>
+                                <p className="text-muted-foreground">Let's turn your challenges into big wins.</p>
+                            </div>
+                            <Link
+                                to="/contact"
+                                className="px-8 py-4 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary/90 transition-all shadow-lg hover:shadow-primary/20"
+                            >
+                                Book a Consultation
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    );
+};
+
+export default CaseStudyDetail;

@@ -5,8 +5,29 @@ const CustomCursor = () => {
     const cursorRef = useRef<HTMLDivElement>(null);
     const [isHovering, setIsHovering] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+    // Check if device is touch/mobile
+    useEffect(() => {
+        const checkTouchDevice = () => {
+            const isTouchCapable =
+                'ontouchstart' in window ||
+                navigator.maxTouchPoints > 0 ||
+                window.matchMedia('(pointer: coarse)').matches ||
+                window.innerWidth <= 1024;
+            setIsTouchDevice(isTouchCapable);
+        };
+
+        checkTouchDevice();
+        window.addEventListener('resize', checkTouchDevice);
+
+        return () => window.removeEventListener('resize', checkTouchDevice);
+    }, []);
 
     useEffect(() => {
+        // Don't run cursor logic on touch devices
+        if (isTouchDevice) return;
+
         const cursor = cursorRef.current;
         if (!cursor) return;
 
@@ -91,10 +112,12 @@ const CustomCursor = () => {
             removeListeners();
             observer.disconnect();
         };
-    }, [isHovering, isVisible]); // Re-run effect if hover state changes to update base scale logic if needed (although mostly handled inside mousemove)
+    }, [isHovering, isVisible, isTouchDevice]); // Re-run effect if hover state changes to update base scale logic if needed (although mostly handled inside mousemove)
 
     // Reset shape loop
     useEffect(() => {
+        if (isTouchDevice) return;
+
         const cursor = cursorRef.current;
         if (!cursor) return;
 
@@ -110,8 +133,11 @@ const CustomCursor = () => {
         }, 100);
 
         return () => clearInterval(idleCheck);
-    }, [isHovering]);
+    }, [isHovering, isTouchDevice]);
 
+
+    // Don't render cursor on touch/mobile devices
+    if (isTouchDevice) return null;
 
     return (
         <div

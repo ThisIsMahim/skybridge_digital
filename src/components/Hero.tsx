@@ -11,7 +11,7 @@ import { Sparkles } from "./Sparkles";
 const Hero = () => {
   const [isBtnHovered, setIsBtnHovered] = useState(false);
   return (
-    <section className="min-h-screen relative overflow-hidden flex items-center bg-background">
+    <section className="min-h-screen relative overflow-hidden flex items-center">
       {/* Subtle noise texture overlay */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -82,8 +82,8 @@ const Hero = () => {
           </div>
 
           {/* Right Column: Headline */}
-          <div className="lg:col-span-7 order-1 lg:order-2 opacity-0 animate-fade-in w-full">
-            <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[6vw] xl:text-[6.5vw] font-black leading-[0.95] lg:leading-[0.9] tracking-tighter text-foreground uppercase text-center lg:text-left w-full">
+          <div className="lg:col-span-7 order-1 lg:order-2 opacity-0 animate-fade-in w-full flex justify-center lg:justify-start">
+            <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[6vw] xl:text-[6.5vw] font-black leading-[0.95] lg:leading-[0.9] tracking-tighter text-foreground uppercase text-center lg:text-left">
               Bridging
               <br />
               <span className="text-gradient">Brand &</span>

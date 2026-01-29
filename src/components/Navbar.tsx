@@ -10,10 +10,10 @@ import { Magnetic } from "./Magnetic";
 import { StaggeredText } from "./StaggeredText";
 
 const navLinks = [
-  { name: "Services", href: "/#services" }, // Updated to absolute path with hash
-  { name: "Work", href: "/#work" },
+  { name: "Services", href: "/#services" },
+  { name: "Work", href: "/work" },
   { name: "Process", href: "/#process" },
-  { name: "Contact", href: "/contact" }, // Updated to route
+  { name: "Contact", href: "/contact" },
 ];
 
 const Navbar = () => {
