@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+
 import ProjectCard from "./ProjectCard";
 import { LiquidDistortion } from "./LiquidDistortion";
 
@@ -30,29 +29,11 @@ const projects = [
 const WorkSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Shared Tooltip State
-  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
-
-  // Mouse tracking for shared tooltip
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // Smooth spring physics for tooltip movement
-  const springX = useSpring(mouseX, { stiffness: 100, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 100, damping: 20 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    // Direct client tracking for performance (avoids layout thrashing)
-    mouseX.set(e.clientX);
-    mouseY.set(e.clientY);
-  };
-
   return (
     <section
       ref={sectionRef}
       id="work"
       className="min-h-screen py-24 relative overflow-hidden"
-      onMouseMove={handleMouseMove}
     >
       <div className="w-full px-6 lg:px-12 xl:px-20">
         {/* Section Header */}
@@ -70,16 +51,14 @@ const WorkSection = () => {
         {/* Project Grid - Full width, minimal */}
         <div
           className="grid md:grid-cols-2 gap-1"
-          onMouseLeave={() => setIsTooltipVisible(false)}
         >
           {projects.map((project, index) => (
             <ProjectCard
-              key={`${project.title}-${index}`}
+              key={project.title}
               title={project.title}
               category={project.category}
               image={project.image}
               className="w-full"
-              onMouseEnter={() => setIsTooltipVisible(true)}
             />
           ))}
         </div>
@@ -87,8 +66,8 @@ const WorkSection = () => {
         {/* View All CTA */}
         <div className="mt-16 lg:mt-24">
           <LiquidDistortion>
-            <Link
-              to="/work"
+            <a
+              href="/work"
               className="inline-flex items-center gap-4 text-foreground hover:text-accent transition-colors group"
             >
               <span className="text-sm uppercase tracking-widest">View all projects</span>
@@ -105,45 +84,11 @@ const WorkSection = () => {
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
-            </Link>
+            </a>
           </LiquidDistortion>
         </div>
       </div>
-
-      {/* --- Shared Portal Tooltip --- */}
-      <SharedTooltip
-        active={isTooltipVisible}
-        x={springX}
-        y={springY}
-      />
     </section>
-  );
-};
-
-const SharedTooltip = ({ active, x, y }: { active: boolean; x: any; y: any }) => {
-  return (
-    <motion.div
-      className="fixed z-50 pointer-events-none top-0 left-0 hidden lg:flex items-center justify-center mix-blend-difference"
-      style={{
-        x,
-        y,
-        // Offset tooltip slightly below to not block the cursor/flashlight center
-        marginLeft: -40, // Center of 80px width
-        marginTop: 16,
-      }}
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{
-        opacity: active ? 1 : 0,
-        scale: active ? 1 : 0.5
-      }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-    >
-      <div className="bg-white text-black h-20 w-20 rounded-full flex items-center justify-center shadow-2xl">
-        <span className="text-[10px] font-bold tracking-widest uppercase">
-          View
-        </span>
-      </div>
-    </motion.div>
   );
 };
 

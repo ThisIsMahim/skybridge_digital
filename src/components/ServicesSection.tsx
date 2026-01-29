@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
 import { useLenis } from "@studio-freight/react-lenis";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
@@ -18,6 +17,7 @@ interface Service {
   title: string;
   description: string;
   theme: ServiceTheme;
+  image: string;
 }
 
 interface ServiceCardProps {
@@ -33,27 +33,29 @@ const services: Service[] = [
     id: "01",
     category: "Design",
     title: "UI/UX & Brand Identity",
-    description: "Crafting immersive digital experiences that captivate. We build pixel-perfect interfaces and robust design systems effectively bridging imagination and interaction.",
+    description: "Crafting immersive digital experiences that captivate. We build pixel-perfect interfaces and robust design systems.",
     theme: {
       bg: "bg-zinc-50",
       text: "text-zinc-950",
       accent: "text-indigo-600",
       border: "border-zinc-200",
       secondaryText: "text-zinc-600"
-    }
+    },
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80"
   },
   {
     id: "02",
     category: "Development",
     title: "Web & Mobile Engineering",
-    description: "Scalable, high-performance solutions built on modern architectures. We compile complex requirements into elegant, secure code ready for growth.",
+    description: "Scalable, high-performance solutions built on modern architectures. We compile complex requirements into elegant code.",
     theme: {
       bg: "bg-black",
       text: "text-white",
       accent: "text-cyan-400",
       border: "border-white/10",
       secondaryText: "text-zinc-400"
-    }
+    },
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80"
   },
   {
     id: "03",
@@ -66,20 +68,22 @@ const services: Service[] = [
       accent: "text-cyan-200",
       border: "border-white/10",
       secondaryText: "text-white/80"
-    }
+    },
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
   },
   {
     id: "04",
     category: "Marketing",
     title: "Digital Growth Strategy",
-    description: "Strategic campaigns that drive real results. We blend creativity with analytics to amplify your message and connect with customers.",
+    description: "Strategic campaigns that drive real results. We blend creativity with analytics to amplify your message.",
     theme: {
       bg: "bg-[#0a2233]",
       text: "text-white",
       accent: "text-cyan-400",
       border: "border-white/10",
       secondaryText: "text-slate-400"
-    }
+    },
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80"
   }
 ];
 
@@ -98,37 +102,32 @@ const ServiceCard = ({ service, index, range, targetScale, progress }: ServiceCa
   const finalScale = isMobile ? 1 : scale;
 
   return (
-    <div ref={container} className={`min-h-screen lg:h-screen flex items-center justify-center relative lg:sticky lg:top-0 ${service.theme.bg}`}>
+    <div ref={container} className={`min-h-[80vh] lg:h-screen flex items-center justify-center relative lg:sticky lg:top-0 ${service.theme.bg}`}>
       <motion.div
         style={{ scale: finalScale, top: isMobile ? 0 : `calc(-5vh + ${index * 25}px)` }}
-        className={`relative flex flex-col md:flex-row gap-6 lg:gap-10 w-full max-w-7xl mx-auto p-6 lg:p-10 h-auto lg:h-[70vh] rounded-[2rem] border ${service.theme.border} overflow-hidden ${service.theme.bg} will-change-transform`}
+        className={`relative flex flex-col md:flex-row gap-4 lg:gap-8 w-full max-w-6xl mx-auto p-4 lg:p-8 h-auto lg:h-[60vh] rounded-[2rem] border ${service.theme.border} overflow-hidden ${service.theme.bg} will-change-transform`}
       >
         {/* Left Content */}
-        <div className="w-full md:w-1/2 flex flex-col justify-between z-10">
-          <div className="space-y-3">
-            <div className="flex items-center gap-4">
-              <span className={`text-4xl font-display font-bold opacity-30 ${service.theme.text}`}>{service.id}</span>
-              <span className={`text-xs uppercase tracking-widest font-medium px-3 py-1 rounded-full border ${service.theme.border} ${service.theme.text}`}>
+        <div className="w-full md:w-1/2 flex flex-col justify-center z-10">
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <span className={`text-2xl font-display font-bold opacity-30 ${service.theme.text}`}>{service.id}</span>
+              <span className={`text-[10px] uppercase tracking-widest font-medium px-2 py-0.5 rounded-full border ${service.theme.border} ${service.theme.text}`}>
                 {service.category}
               </span>
             </div>
 
-            <h3 className={`font-display text-4xl lg:text-6xl font-bold leading-[0.9] tracking-tighter uppercase ${service.theme.text}`}>
+            <h3 className={`font-display text-3xl lg:text-5xl font-bold leading-[0.9] tracking-tighter uppercase ${service.theme.text}`}>
               {service.title.split(' ').map((word: string, i: number) => (
                 <span key={i} className="block">{word}</span>
               ))}
             </h3>
           </div>
 
-          <div className="space-y-6">
-            <p className={`text-lg leading-relaxed max-w-md ${service.theme.secondaryText}`}>
+          <div className="mt-4">
+            <p className={`text-sm lg:text-base leading-relaxed max-w-sm ${service.theme.secondaryText}`}>
               {service.description}
             </p>
-
-            <button className={`group flex items-center gap-3 text-base font-medium transition-colors ${service.theme.accent}`}>
-              <span>Explore Solution</span>
-              <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </button>
           </div>
         </div>
 
@@ -137,10 +136,13 @@ const ServiceCard = ({ service, index, range, targetScale, progress }: ServiceCa
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.div
               style={{ scale: imageScale }}
-              className="w-full h-full bg-zinc-300 dark:bg-zinc-800 object-cover"
+              className="w-full h-full bg-zinc-300 dark:bg-zinc-800"
             >
-              {/* Fallback pattern or placeholder */}
-              <div className={`w-full h-full opacity-20 bg-[radial-gradient(circle_at_50%_50%,_rgba(0,0,0,0.1),transparent_70%)]`} />
+              <img
+                src={service.image}
+                alt={service.title}
+                className="w-full h-full object-cover"
+              />
             </motion.div>
           </div>
         </div>

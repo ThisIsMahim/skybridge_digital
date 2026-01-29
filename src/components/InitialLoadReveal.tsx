@@ -8,10 +8,10 @@ const InitialLoadReveal = () => {
 
     return (
         <div className="fixed inset-0 z-[9999] flex pointer-events-none">
-            {[...Array(3)].map((_, i) => (
+            {[...Array(5)].map((_, i) => (
                 <motion.div
                     key={i}
-                    className="h-full w-full bg-accent relative pointer-events-auto will-change-transform"
+                    className="h-full w-full bg-accent relative pointer-events-auto"
                     initial={{ y: "0%" }}
                     animate={{ y: "-100%" }}
                     transition={{
@@ -20,7 +20,7 @@ const InitialLoadReveal = () => {
                         delay: i * 0.1,
                     }}
                     onAnimationComplete={() => {
-                        if (i === 2) {
+                        if (i === 4) {
                             setComplete(true);
                         }
                     }}
