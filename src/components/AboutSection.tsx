@@ -1,3 +1,10 @@
+import { useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
+
 const timelineItems = [
   {
     year: "2018",
@@ -27,6 +34,27 @@ const timelineItems = [
 ];
 
 const AboutSection = () => {
+  const [activeYear, setActiveYear] = useState<string>(timelineItems[0].year);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useGSAP(
+    () => {
+      itemsRef.current.forEach((el, index) => {
+        if (!el) return;
+
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top center+=10%",
+          end: "bottom center-=10%",
+          onEnter: () => setActiveYear(timelineItems[index].year),
+          onEnterBack: () => setActiveYear(timelineItems[index].year),
+        });
+      });
+    },
+    { scope: containerRef }
+  );
+
   return (
     <section id="about" className="min-h-screen py-24">
       <div className="w-full px-6 lg:px-12 xl:px-20">
@@ -48,7 +76,7 @@ const AboutSection = () => {
           </div>
 
           {/* Scrolling Timeline */}
-          <div className="relative">
+          <div className="relative" ref={containerRef}>
             {/* Vertical line */}
             <div className="absolute left-0 top-0 bottom-0 w-px bg-border" />
 
@@ -56,15 +84,29 @@ const AboutSection = () => {
               {timelineItems.map((item, index) => (
                 <div
                   key={item.year}
-                  className="relative pl-12 group"
+                  ref={(el) => (itemsRef.current[index] = el)}
+                  className={`relative pl-12 group transition-all duration-500 ease-out py-8 ${activeYear === item.year
+                      ? "opacity-100 blur-none scale-100"
+                      : "opacity-30 blur-[2px] scale-95"
+                    }`}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   {/* Timeline dot */}
-                  <div className="absolute left-0 top-0 -translate-x-1/2 w-3 h-3 rounded-full bg-foreground group-hover:bg-accent transition-colors" />
+                  <div
+                    className={`absolute left-0 top-8 -translate-x-1/2 w-3 h-3 rounded-full transition-colors duration-500 ${activeYear === item.year
+                        ? "bg-accent scale-125"
+                        : "bg-foreground group-hover:bg-accent"
+                      }`}
+                  />
 
                   {/* Content - floating text, no card */}
                   <div className="space-y-4">
-                    <span className="text-accent font-display font-extrabold text-6xl lg:text-7xl opacity-20 group-hover:opacity-40 transition-opacity">
+                    <span
+                      className={`font-display font-extrabold text-6xl lg:text-7xl transition-opacity duration-500 ${activeYear === item.year
+                          ? "text-accent opacity-100"
+                          : "text-accent opacity-20 group-hover:opacity-40"
+                        }`}
+                    >
                       {item.year}
                     </span>
                     <h3 className="font-display text-2xl lg:text-3xl font-extrabold text-foreground uppercase tracking-tight">

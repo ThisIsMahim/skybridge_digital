@@ -1,3 +1,9 @@
+import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import ProjectCard from "./ProjectCard";
+import { LiquidDistortion } from "./LiquidDistortion";
+
 const projects = [
   {
     title: "Nexus Finance",
@@ -22,15 +28,39 @@ const projects = [
 ];
 
 const WorkSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Shared Tooltip State
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+
+  // Mouse tracking for shared tooltip
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth spring physics for tooltip movement
+  const springX = useSpring(mouseX, { stiffness: 100, damping: 20 });
+  const springY = useSpring(mouseY, { stiffness: 100, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    // Direct client tracking for performance (avoids layout thrashing)
+    mouseX.set(e.clientX);
+    mouseY.set(e.clientY);
+  };
+
   return (
-    <section id="work" className="min-h-screen py-24">
+    <section
+      ref={sectionRef}
+      id="work"
+      className="min-h-screen py-24 relative overflow-hidden"
+      onMouseMove={handleMouseMove}
+    >
       <div className="w-full px-6 lg:px-12 xl:px-20">
         {/* Section Header */}
         <div className="mb-24 lg:mb-32 space-y-6">
           <span className="text-accent text-sm font-medium tracking-widest uppercase">
             Portfolio
           </span>
-          <h2 className="font-display text-5xl lg:text-6xl xl:text-[8vw] font-extrabold text-foreground leading-[0.9] tracking-tighter uppercase">
+          <h2 className="font-display text-4xl lg:text-6xl xl:text-[8vw] font-extrabold text-foreground leading-[0.9] tracking-tighter uppercase">
             Selected
             <br />
             Work
@@ -38,60 +68,82 @@ const WorkSection = () => {
         </div>
 
         {/* Project Grid - Full width, minimal */}
-        <div className="grid md:grid-cols-2 gap-1">
+        <div
+          className="grid md:grid-cols-2 gap-1"
+          onMouseLeave={() => setIsTooltipVisible(false)}
+        >
           {projects.map((project, index) => (
-            <div
-              key={project.title}
-              className="group relative aspect-[4/3] overflow-hidden cursor-pointer"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              {/* Image */}
-              <img
-                src={project.image}
-                alt={project.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0"
-              />
-
-              {/* Dark overlay */}
-              <div className="absolute inset-0 bg-background/60 group-hover:bg-background/40 transition-colors duration-500" />
-
-              {/* Content */}
-              <div className="absolute inset-0 p-8 lg:p-12 flex flex-col justify-end">
-                <span className="text-accent text-xs uppercase tracking-widest mb-3">
-                  {project.category}
-                </span>
-                <h3 className="font-display text-2xl lg:text-4xl font-extrabold text-foreground uppercase tracking-tight group-hover:text-accent transition-colors">
-                  {project.title}
-                </h3>
-              </div>
-            </div>
+            <ProjectCard
+              key={`${project.title}-${index}`}
+              title={project.title}
+              category={project.category}
+              image={project.image}
+              className="w-full"
+              onMouseEnter={() => setIsTooltipVisible(true)}
+            />
           ))}
         </div>
 
         {/* View All CTA */}
         <div className="mt-16 lg:mt-24">
-          <a
-            href="#"
-            className="inline-flex items-center gap-4 text-foreground hover:text-accent transition-colors group"
-          >
-            <span className="text-sm uppercase tracking-widest">View all projects</span>
-            <svg
-              className="w-6 h-6 transition-transform group-hover:translate-x-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          <LiquidDistortion>
+            <Link
+              to="/work"
+              className="inline-flex items-center gap-4 text-foreground hover:text-accent transition-colors group"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </a>
+              <span className="text-sm uppercase tracking-widest">View all projects</span>
+              <svg
+                className="w-6 h-6 transition-transform group-hover:translate-x-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </Link>
+          </LiquidDistortion>
         </div>
       </div>
+
+      {/* --- Shared Portal Tooltip --- */}
+      <SharedTooltip
+        active={isTooltipVisible}
+        x={springX}
+        y={springY}
+      />
     </section>
+  );
+};
+
+const SharedTooltip = ({ active, x, y }: { active: boolean; x: any; y: any }) => {
+  return (
+    <motion.div
+      className="fixed z-50 pointer-events-none top-0 left-0 hidden lg:flex items-center justify-center mix-blend-difference"
+      style={{
+        x,
+        y,
+        // Offset tooltip slightly below to not block the cursor/flashlight center
+        marginLeft: -40, // Center of 80px width
+        marginTop: 16,
+      }}
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{
+        opacity: active ? 1 : 0,
+        scale: active ? 1 : 0.5
+      }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+    >
+      <div className="bg-white text-black h-20 w-20 rounded-full flex items-center justify-center shadow-2xl">
+        <span className="text-[10px] font-bold tracking-widest uppercase">
+          View
+        </span>
+      </div>
+    </motion.div>
   );
 };
 

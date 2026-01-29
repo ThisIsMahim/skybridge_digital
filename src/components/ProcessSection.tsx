@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Compass, Target, Wrench } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,6 +34,23 @@ const ProcessSection = () => {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const imagesRef = useRef<HTMLImageElement[]>([]);
+
+  const [activeStep, setActiveStep] = useState(0);
+  const stepsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useGSAP(() => {
+    stepsRef.current.forEach((step, index) => {
+      if (!step) return;
+
+      ScrollTrigger.create({
+        trigger: step,
+        start: "top 75%",
+        end: "bottom 25%",
+        onEnter: () => setActiveStep(index),
+        onEnterBack: () => setActiveStep(index),
+      });
+    });
+  }, { scope: sectionRef });
 
   // Preload images
   useEffect(() => {
@@ -169,18 +187,27 @@ const ProcessSection = () => {
       </div>
 
       {/* Foreground Content */}
-      <div className="w-full px-6 lg:px-12 xl:px-20 relative z-20 -mt-[100vh]">
-        <div className="grid lg:grid-cols-[1.5fr_auto_1fr] gap-x-8 lg:gap-x-20 min-h-screen pt-32 lg:pt-48 pb-32">
+      <div className="w-full px-6 lg:px-12 xl:px-20 relative z-20">
+        <div className="grid lg:grid-cols-[1.5fr_auto_1fr] gap-x-8 lg:gap-x-20 min-h-screen -mt-20 lg:-mt-32 pb-32">
 
           {/* Scrolling Left Column - Steps */}
-          <div className="space-y-32 lg:space-y-64 order-2 lg:order-1 py-16">
+          <div className="space-y-12 lg:space-y-20 order-2 lg:order-1 pb-16 pt-0">
             {processSteps.map((step, index) => (
-              <div key={step.title} className="group relative pl-8 lg:pl-0 border-l lg:border-l-0 border-border/30">
+              <div
+                key={step.title}
+                ref={(el) => (stepsRef.current[index] = el)}
+                className={`group relative pl-8 lg:pl-0 border-l lg:border-l-0 border-border/30 transition-all duration-300 ease-out py-8 ${activeStep === index
+                  ? "opacity-100 blur-none scale-100 grayscale-0"
+                  : "opacity-30 blur-sm scale-95 grayscale"
+                  }`}
+              >
                 <div className="space-y-6 lg:text-right">
-                  <span className="font-display text-7xl lg:text-8xl font-extrabold text-foreground/10 group-hover:text-accent/30 transition-colors block">
+                  <span className={`font-display text-7xl lg:text-8xl font-extrabold transition-colors block ${activeStep === index ? "text-accent" : "text-foreground/10 group-hover:text-accent/30"
+                    }`}>
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  <h3 className="font-display text-3xl lg:text-4xl font-extrabold text-foreground uppercase tracking-tight group-hover:text-accent transition-colors">
+                  <h3 className={`font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-tight transition-colors ${activeStep === index ? "text-foreground" : "text-foreground group-hover:text-accent"
+                    }`}>
                     {step.title}
                   </h3>
                   <p className="text-muted-foreground text-lg leading-relaxed max-w-lg lg:ml-auto">
@@ -201,7 +228,7 @@ const ProcessSection = () => {
           </div>
 
           {/* Sticky Right Column - Header */}
-          <div className="lg:sticky lg:top-32 lg:self-start space-y-8 h-fit order-1 lg:order-3 pt-16">
+          <div className="lg:sticky lg:top-32 lg:self-start space-y-8 h-fit order-1 lg:order-3 pt-0">
             <span className="text-accent text-sm font-medium tracking-widest uppercase">
               Process
             </span>

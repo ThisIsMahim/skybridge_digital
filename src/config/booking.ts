@@ -5,9 +5,30 @@ export const bookingConfig = {
     handle: "@skybridge_digital",
     avatar: "/lovable-uploads/avatar.png", // Placeholder, will need a real one or generic
   },
+  meetingTypes: [
+    {
+      id: "intro",
+      title: "Intro Call",
+      duration: "5m",
+      description: "Generally, intro calls take around 5 mins. Book a call if your interested for a short knock!",
+    },
+    {
+      id: "discovery-15",
+      title: "Discovery Meeting",
+      duration: "15m",
+      description: "Hey! 15 minutes is plenty of time. Let's dive into your project \uD83E\uDD29",
+    },
+    {
+      id: "discovery-30",
+      title: "Discovery Meeting",
+      duration: "30m",
+      description: "Hey! 30 minutes is plenty of time. Let's dive into your project \uD83E\uDD29",
+    }
+  ],
+  // Default fallback for types
   meeting: {
-    title: "Discovery Meeting",
-    description: "Hey! 30 minutes is plenty of time. Let's dive into your project \uD83E\uDD29", // Emoji included
+    title: "Discovery Meeting", 
+    description: "Hey! 30 minutes is plenty of time. Let's dive into your project \uD83E\uDD29",
     duration: "30m",
     platform: "Google Meet",
   },

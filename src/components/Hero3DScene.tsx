@@ -50,7 +50,7 @@ function MinimalObject() {
 
 export default function Hero3DScene() {
     return (
-        <div className="absolute inset-y-0 right-0 w-full lg:w-1/2 pointer-events-none z-0">
+        <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
             <Canvas
                 camera={{ position: [0, 0, 6], fov: 45 }}
                 gl={{ alpha: true, antialias: true }}
