@@ -30,6 +30,8 @@ const processSteps = [
 
 const ProcessSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -39,6 +41,29 @@ const ProcessSection = () => {
   const stepsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
+    // Reveal section content and background
+    if (stickyRef.current && contentRef.current) {
+      gsap.fromTo([stickyRef.current, contentRef.current],
+        {
+          opacity: 0,
+          scale: 0.98,
+          filter: "blur(5px)",
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          filter: "blur(0px)",
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "top 20%",
+            scrub: 1.5,
+          }
+        }
+      );
+    }
+
     stepsRef.current.forEach((step, index) => {
       if (!step) return;
 
@@ -171,7 +196,7 @@ const ProcessSection = () => {
   return (
     <section ref={sectionRef} id="process" className="relative w-full">
       {/* Background Sticky Canvas */}
-      <div className="sticky top-0 left-0 w-full h-screen -z-10 overflow-hidden bg-background">
+      <div ref={stickyRef} className="sticky top-0 left-0 w-full h-screen -z-10 overflow-hidden bg-background">
         {/* Reduced overlay opacity to make canvas visible */}
         <div className="absolute inset-0 bg-background/40 z-10" />
 
@@ -182,12 +207,12 @@ const ProcessSection = () => {
         )}
         <canvas
           ref={canvasRef}
-          className="w-full h-full object-cover opacity-60"
+          className="w-full h-full object-cover opacity-60 blur-[1.5px]"
         />
       </div>
 
       {/* Foreground Content */}
-      <div className="w-full px-6 lg:px-12 xl:px-20 relative z-20">
+      <div ref={contentRef} className="w-full px-6 lg:px-12 xl:px-20 relative z-20">
         <div className="grid lg:grid-cols-[1.5fr_auto_1fr] gap-x-8 lg:gap-x-20 min-h-screen -mt-20 lg:-mt-32 pb-32">
 
           {/* Scrolling Left Column - Steps */}

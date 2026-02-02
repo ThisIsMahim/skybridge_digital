@@ -33,15 +33,15 @@ const WorkSection = () => {
     <section
       ref={sectionRef}
       id="work"
-      className="min-h-screen py-24 relative overflow-hidden"
+      className="py-12 lg:py-16 relative overflow-hidden"
     >
       <div className="w-full px-6 lg:px-12 xl:px-20">
         {/* Section Header */}
-        <div className="mb-24 lg:mb-32 space-y-6">
-          <span className="text-accent text-sm font-medium tracking-widest uppercase">
+        <div className="mb-12 lg:mb-16 space-y-4">
+          <span className="text-accent text-xs font-bold tracking-widest uppercase">
             Portfolio
           </span>
-          <h2 className="font-display text-4xl lg:text-6xl xl:text-[8vw] font-extrabold text-foreground leading-[0.9] tracking-tighter uppercase">
+          <h2 className="font-display text-4xl lg:text-6xl xl:text-[6vw] font-extrabold text-foreground leading-[0.9] tracking-tighter uppercase">
             Selected
             <br />
             Work
@@ -50,7 +50,7 @@ const WorkSection = () => {
 
         {/* Project Grid - Full width, minimal */}
         <div
-          className="grid md:grid-cols-2 gap-1"
+          className="grid md:grid-cols-2 gap-4 lg:gap-6"
         >
           {projects.map((project, index) => (
             <ProjectCard
@@ -64,15 +64,15 @@ const WorkSection = () => {
         </div>
 
         {/* View All CTA */}
-        <div className="mt-16 lg:mt-24">
+        <div className="mt-12">
           <LiquidDistortion>
             <a
-              href="/work"
+              href="/case-studies"
               className="inline-flex items-center gap-4 text-foreground hover:text-accent transition-colors group"
             >
-              <span className="text-sm uppercase tracking-widest">View all projects</span>
+              <span className="text-xs uppercase tracking-widest font-bold">View all projects</span>
               <svg
-                className="w-6 h-6 transition-transform group-hover:translate-x-2"
+                className="w-5 h-5 transition-transform group-hover:translate-x-2"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

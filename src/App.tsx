@@ -8,7 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import Index from "./pages/Index";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
-import Work from "./pages/Work";
+
 import CaseStudies from "./pages/CaseStudies";
 import CaseStudyDetail from "./pages/CaseStudyDetail";
 import AdminDashboard from "./pages/AdminDashboard"; // Keeping for reference or fallback, can remove later
@@ -55,7 +55,6 @@ const AnimatedRoutes = () => {
       {shouldShowGlobal && <InitialLoadReveal />}
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Index />} />
-        <Route path="/work" element={<Work />} />
         <Route path="/case-studies" element={<CaseStudies />} />
         <Route path="/case-studies/:id" element={<CaseStudyDetail />} />
         <Route path="/contact" element={<Contact />} />

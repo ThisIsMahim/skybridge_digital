@@ -11,7 +11,7 @@ import { StaggeredText } from "./StaggeredText";
 
 const navLinks = [
   { name: "Services", href: "/#services" },
-  { name: "Work", href: "/work" },
+  { name: "Work", href: "/case-studies" },
   { name: "Process", href: "/#process" },
   { name: "Contact", href: "/contact" },
 ];

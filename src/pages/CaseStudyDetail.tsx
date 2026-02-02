@@ -38,7 +38,7 @@ const CaseStudyDetail = () => {
                             animate={{ opacity: 1, y: 0 }}
                             className="flex items-center gap-3 mb-6"
                         >
-                            <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-bold uppercase tracking-wider">
+                            <span className="px-3 py-1 bg-accent/10 text-accent border border-accent/20 rounded-full text-xs font-bold uppercase tracking-wider shadow-[0_0_10px_-3px_hsl(var(--accent)/0.3)]">
                                 {study.industry}
                             </span>
                             <span className="text-muted-foreground font-medium">|</span>
@@ -61,16 +61,16 @@ const CaseStudyDetail = () => {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.2 }}
-                            className="inline-flex flex-col sm:flex-row gap-8 bg-card border border-border/50 p-6 rounded-2xl"
+                            className="inline-flex flex-col sm:flex-row gap-8 bg-secondary/30 backdrop-blur-sm border border-white/10 p-6 rounded-2xl"
                         >
                             <div>
-                                <span className="block text-sm text-muted-foreground uppercase tracking-wide mb-1">Key Outcome</span>
-                                <span className="block text-3xl font-bold text-primary">{study.metric}</span>
+                                <span className="block text-xs text-accent font-bold uppercase tracking-widest mb-1">Key Outcome</span>
+                                <span className="block text-3xl font-bold text-white">{study.metric}</span>
                             </div>
-                            <div className="hidden sm:block w-px bg-border/50" />
+                            <div className="hidden sm:block w-px bg-white/10" />
                             <div>
-                                <span className="block text-sm text-muted-foreground uppercase tracking-wide mb-1">Service</span>
-                                <span className="block text-xl font-semibold">{study.industry}</span>
+                                <span className="block text-xs text-accent font-bold uppercase tracking-widest mb-1">Service</span>
+                                <span className="block text-xl font-semibold text-white/90">{study.industry}</span>
                             </div>
                         </motion.div>
                     </div>
@@ -174,15 +174,15 @@ const CaseStudyDetail = () => {
                             {/* The Outcome */}
                             <section>
                                 <h2 className="font-display text-3xl font-bold mb-6 flex items-center gap-3">
-                                    <span className="w-12 h-1 rounded-full bg-green-500" />
+                                    <span className="w-12 h-1 rounded-full bg-accent" />
                                     The Win
                                 </h2>
                                 <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                                     {study.outcome}
                                 </p>
-                                <div className="bg-card border border-border p-8 rounded-2xl text-center">
-                                    <span className="block text-sm font-bold uppercase tracking-wider text-muted-foreground mb-2">Final Impact</span>
-                                    <span className="block text-5xl lg:text-7xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">
+                                <div className="bg-secondary/30 backdrop-blur-sm border border-white/10 p-8 rounded-2xl text-center shadow-[0_0_30px_-10px_rgba(34,211,238,0.1)]">
+                                    <span className="block text-sm font-bold uppercase tracking-wider text-accent mb-2">Final Impact</span>
+                                    <span className="block text-5xl lg:text-7xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-cyan-400">
                                         {study.metric}
                                     </span>
                                 </div>

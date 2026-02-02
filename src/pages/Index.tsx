@@ -9,6 +9,7 @@ import AboutSection from "@/components/AboutSection";
 import ServicesSection from "@/components/ServicesSection";
 import ProcessSection from "@/components/ProcessSection";
 import WorkSection from "@/components/WorkSection";
+import TeamSection from "@/components/TeamSection";
 
 import FloatingChatButton from "@/components/FloatingChatButton";
 import ClientLogos from "@/components/ClientLogos";
@@ -41,6 +42,7 @@ const Index = () => {
       <Hero />
       <ClientLogos />
       <AboutSection />
+      <TeamSection />
       <div ref={servicesRef} className="relative z-0" id="services-container">
         <ServicesSection />
       </div>
