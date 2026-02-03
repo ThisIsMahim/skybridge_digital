@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom"; // Import Link and useLocation
-import skybridgeLogo from "@/assets/skybridge-logo-black-bg-enhanced.png";
+import skybridgeLogo from "@/assets/skybridge-logo-black-bg.png";
 
 import { Button } from "./ui/button";
 import { BookingModal } from "./BookingModal";

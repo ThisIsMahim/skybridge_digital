@@ -1,4 +1,5 @@
 
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { CaseStudy } from "@/data/caseStudies";
 import { cn } from "@/lib/utils";
@@ -9,7 +10,7 @@ interface WorkGridCardProps {
     className?: string;
 }
 
-const WorkGridCard = ({ project, className }: WorkGridCardProps) => {
+const WorkGridCard = memo(({ project, className }: WorkGridCardProps) => {
     return (
         <Link
             to={`/case-studies/${project.id}`}
@@ -20,6 +21,7 @@ const WorkGridCard = ({ project, className }: WorkGridCardProps) => {
                 <img
                     src={project.image}
                     alt={project.title}
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
 
@@ -46,11 +48,17 @@ const WorkGridCard = ({ project, className }: WorkGridCardProps) => {
                 <div className="w-12 h-12 flex-shrink-0 bg-white border border-border rounded-full p-2 flex items-center justify-center shadow-sm">
                     {/* Using a placeholder if logo fails or is purely decoration in this mock */}
                     {project.logo ? (
-                        <img src={project.logo} alt={project.client} className="w-full h-full object-contain" />
+                        <img
+                            src={project.logo}
+                            alt={project.client}
+                            loading="lazy"
+                            className="w-full h-full object-contain"
+                        />
                     ) : (
                         <span className="text-xs font-bold text-black">{project.client.substring(0, 2)}</span>
                     )}
                 </div>
+
 
                 {/* Text Info */}
                 <div className="space-y-1">
@@ -64,6 +72,6 @@ const WorkGridCard = ({ project, className }: WorkGridCardProps) => {
             </div>
         </Link>
     );
-};
+});
 
 export default WorkGridCard;

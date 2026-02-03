@@ -43,7 +43,7 @@ const formSchema = z.object({
     message: z.string().min(10, {
         message: "Message must be at least 10 characters.",
     }),
-    budget: z.array(z.number()).default([5000]),
+    budget: z.array(z.number()).default([2500]),
 });
 
 const Contact = () => {
@@ -56,7 +56,7 @@ const Contact = () => {
             name: "",
             email: "",
             message: "",
-            budget: [5000],
+            budget: [2500],
         },
     });
 
@@ -214,9 +214,9 @@ const Contact = () => {
                                                 </div>
                                                 <FormControl>
                                                     <Slider
-                                                        min={1000}
-                                                        max={50000}
-                                                        step={1000}
+                                                        min={500}
+                                                        max={10000}
+                                                        step={500}
                                                         value={field.value}
                                                         onValueChange={field.onChange}
                                                         className="py-2 cursor-pointer"

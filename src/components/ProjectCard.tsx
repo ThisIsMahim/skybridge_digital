@@ -40,6 +40,7 @@ const ProjectCard = ({
                 <img
                     src={image}
                     alt={title}
+                    loading="lazy"
                     className="w-full h-full object-cover grayscale opacity-50 transition-transform duration-700 group-hover:scale-105"
                 />
             </div>
@@ -52,9 +53,11 @@ const ProjectCard = ({
                 <img
                     src={image}
                     alt={title}
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
             </div>
+
 
             {/* --- Text Content --- */}
             <div className="absolute inset-0 p-6 lg:p-8 flex flex-col justify-end z-20 pointer-events-none mix-blend-difference">

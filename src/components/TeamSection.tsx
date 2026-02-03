@@ -95,8 +95,10 @@ const TeamSection = () => {
                                     <img
                                         src={member.image}
                                         alt={member.name}
+                                        loading="lazy"
                                         className="relative w-full h-full object-cover rounded-full z-10 border-4 border-background/50 shadow-sm"
                                     />
+
 
                                     {/* Floating Social Pill - Appears on Hover (or styled to look like it floats) */}
                                     <div className="absolute -bottom-4 z-20 flex items-center justify-center gap-2 bg-background/90 backdrop-blur-md border border-border/50 px-4 py-2 rounded-full shadow-lg opacity-100 translate-y-0 transition-all duration-300 group-hover:scale-105 group-hover:border-accent/40">

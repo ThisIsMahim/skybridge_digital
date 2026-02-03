@@ -1,6 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap');
-
 @tailwind base;
+
 @tailwind components;
 @tailwind utilities;
 
@@ -100,7 +99,12 @@
     font-family: 'Inter', sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Syne', sans-serif;
     @apply font-extrabold tracking-tighter;
   }
@@ -122,9 +126,12 @@
 
   /* Floating animation for hero elements */
   @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
       transform: translateY(0) rotate(0deg);
     }
+
     50% {
       transform: translateY(-20px) rotate(2deg);
     }
@@ -139,6 +146,7 @@
     from {
       clip-path: inset(0 100% 0 0);
     }
+
     to {
       clip-path: inset(0 0 0 0);
     }
@@ -150,7 +158,8 @@
 }
 
 /* Lenis smooth scroll */
-html.lenis, html.lenis body {
+html.lenis,
+html.lenis body {
   height: auto;
 }
 
@@ -170,12 +179,46 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-/* Hide default scrollbar */
+/* Performance Optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  box-sizing: border-box;
+}
+
+/* Enable hardware acceleration for animations */
+.animate-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform, opacity;
+}
+
+img,
+video,
+canvas {
+  user-select: none;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Hide default scrollbar but keep functionality */
 ::-webkit-scrollbar {
+  width: 0;
   display: none;
 }
 
-/* For Firefox */
 html {
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }

@@ -3,21 +3,153 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Skybridge Digital</title>
+    <title>Skybridge Digital | Bridging Brand & Reality</title>
     <meta name="description" content="Skybridge Digital - Premier Web Development and Digital Marketing Agency" />
     <meta name="author" content="Skybridge Digital" />
 
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    
     <meta property="og:title" content="Skybridge Digital" />
     <meta property="og:description" content="Premier Web Development and Digital Marketing Agency" />
     <meta property="og:type" content="website" />
-    <!-- Placeholder for OG image if available, otherwise removed lovable one -->
-    
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@SkybridgeDigital" />
+
+    <style>
+      /* Premium Preloader Styles */
+      #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: opacity 0.8s cubic-bezier(0.77, 0, 0.175, 1), visibility 0.8s;
+      }
+      
+      .loader-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .loader-logo {
+        width: 60px;
+        height: 60px;
+        border: 2px solid #ffffff;
+        position: relative;
+        animation: rotate 2s infinite ease-in-out;
+      }
+
+      .loader-logo::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        width: 100%;
+        height: 100%;
+        border: 2px solid hsl(189, 52%, 58%);
+        animation: rotate-reverse 2.5s infinite ease-in-out;
+      }
+
+      .loader-text {
+        font-family: 'Syne', sans-serif;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 0.5em;
+        font-size: 10px;
+        font-weight: 700;
+        margin-top: 10px;
+        opacity: 0.8;
+      }
+
+      .loader-bar-container {
+        width: 150px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .loader-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0%;
+        background: hsl(189, 52%, 58%);
+        transition: width 0.4s ease;
+      }
+
+      @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @keyframes rotate-reverse {
+        0% { transform: rotate(360deg); }
+        100% { transform: rotate(0deg); }
+      }
+
+      #preloader.loaded {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      /* Hide scrollbar during loading */
+      body.loading {
+        overflow: hidden;
+      }
+    </style>
   </head>
 
-  <body>
+  <body class="loading">
+    <div id="preloader">
+      <div class="loader-content">
+        <div class="loader-logo"></div>
+        <div class="loader-text">Skybridge Digital</div>
+        <div class="loader-bar-container">
+          <div id="loader-bar" class="loader-bar"></div>
+        </div>
+      </div>
+    </div>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <script>
+      // Preloader Logic
+      (function() {
+        const bar = document.getElementById('loader-bar');
+        const preloader = document.getElementById('preloader');
+        
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += Math.random() * 10;
+          if (progress > 90) progress = 90;
+          if (bar) bar.style.width = progress + '%';
+        }, 100);
+
+        window.addEventListener('load', () => {
+          clearInterval(interval);
+          if (bar) bar.style.width = '100%';
+          
+          setTimeout(() => {
+            if (preloader) preloader.classList.add('loaded');
+            document.body.classList.remove('loading');
+          }, 500);
+        });
+      })();
+    </script>
   </body>
+
 </html>
