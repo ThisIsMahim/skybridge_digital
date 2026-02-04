@@ -11,7 +11,7 @@ import ProcessSection from "@/components/ProcessSection";
 import WorkSection from "@/components/WorkSection";
 import TeamSection from "@/components/TeamSection";
 
-import FloatingChatButton from "@/components/FloatingChatButton";
+import BouncingBall from "@/components/BouncingBall";
 import ClientLogos from "@/components/ClientLogos";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FooterTunnel from "@/components/FooterTunnel";
@@ -54,7 +54,7 @@ const Index = () => {
       </div>
       <TestimonialsSection />
       <FooterTunnel />
-      <FloatingChatButton />
+      <BouncingBall />
     </div>
   );
 };

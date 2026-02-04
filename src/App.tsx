@@ -11,6 +11,7 @@ import CustomScrollbar from "./components/CustomScrollbar";
 import { ReactLenis } from "@studio-freight/react-lenis";
 import InitialLoadReveal from "./components/InitialLoadReveal";
 import AdvancedLoader from "./components/AdvancedLoader";
+import { ChatProvider } from "./context/ChatContext";
 
 const FluidBackground = lazy(() => import("./components/FluidBackground"));
 
@@ -41,26 +42,28 @@ const App = () => {
     <ReactLenis root>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <AnimatePresence mode="wait">
-            {isLoading && <AdvancedLoader onComplete={() => setIsLoading(false)} />}
-          </AnimatePresence>
-          {!isLoading && (
-            <>
-              <Suspense fallback={null}>
-                <FluidBackground />
-              </Suspense>
-              <CustomCursor />
-              <CustomScrollbar />
+          <ChatProvider>
+            <AnimatePresence mode="wait">
+              {isLoading && <AdvancedLoader onComplete={() => setIsLoading(false)} />}
+            </AnimatePresence>
+            {!isLoading && (
+              <>
+                <Suspense fallback={null}>
+                  <FluidBackground />
+                </Suspense>
+                <CustomCursor />
+                <CustomScrollbar />
 
-              <div className="relative z-10">
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                  <AnimatedRoutes />
-                </BrowserRouter>
-              </div>
-            </>
-          )}
+                <div className="relative z-10">
+                  <Toaster />
+                  <Sonner />
+                  <BrowserRouter>
+                    <AnimatedRoutes />
+                  </BrowserRouter>
+                </div>
+              </>
+            )}
+          </ChatProvider>
         </TooltipProvider>
       </QueryClientProvider>
     </ReactLenis>
