@@ -267,6 +267,9 @@ const FooterTunnel = () => {
                 className="absolute inset-0 opacity-50 blur-[.5px] w-full h-full pointer-events-none"
             />
 
+            {/* Top Transition Blur */}
+            <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-40 pointer-events-none" />
+
             {/* Foreground Text Container */}
             <div
                 ref={textContainerRef}
@@ -288,7 +291,7 @@ const FooterTunnel = () => {
                 <div ref={logoRef} className="opacity-0">
                     <img
                         src={skybridgeLogo}
-                        alt="SkyBridge Digital"
+                        alt="SkyBridge Systems"
                         className="w-[300px] md:w-[400px] h-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
                     />
                 </div>
@@ -324,7 +327,7 @@ const FooterTunnel = () => {
 
             {/* Footer Elements pinned at very bottom */}
             <div ref={footerTextRef} className="opacity-0 absolute bottom-4 left-0 right-0 text-center text-white/20 text-xs uppercase tracking-widest z-30">
-                &copy; {new Date().getFullYear()} SkyBridge Digital. All rights reserved.
+                &copy; {new Date().getFullYear()} SkyBridge Systems. All rights reserved.
             </div>
         </div>
     );

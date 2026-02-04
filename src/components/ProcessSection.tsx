@@ -209,6 +209,8 @@ const ProcessSection = () => {
           ref={canvasRef}
           className="w-full h-full object-cover opacity-60 blur-[1.5px]"
         />
+        {/* Bottom Transition Blur */}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" />
       </div>
 
       {/* Foreground Content */}

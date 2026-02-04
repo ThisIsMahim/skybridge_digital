@@ -10,6 +10,7 @@ import CustomCursor from "./components/CustomCursor";
 import CustomScrollbar from "./components/CustomScrollbar";
 import { ReactLenis } from "@studio-freight/react-lenis";
 import InitialLoadReveal from "./components/InitialLoadReveal";
+import AdvancedLoader from "./components/AdvancedLoader";
 
 const FluidBackground = lazy(() => import("./components/FluidBackground"));
 
@@ -31,33 +32,40 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const queryClient = new QueryClient();
 
 // Simple loading fallback
-const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-screen bg-background">
-    <div className="w-12 h-12 border-t-2 border-primary rounded-full animate-spin"></div>
-  </div>
-);
 
-const App = () => (
-  <ReactLenis root>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Suspense fallback={null}>
-          <FluidBackground />
-        </Suspense>
-        <CustomCursor />
-        <CustomScrollbar />
 
-        <div className="relative z-10">
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AnimatedRoutes />
-          </BrowserRouter>
-        </div>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </ReactLenis>
-);
+const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  return (
+    <ReactLenis root>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <AnimatePresence mode="wait">
+            {isLoading && <AdvancedLoader onComplete={() => setIsLoading(false)} />}
+          </AnimatePresence>
+          {!isLoading && (
+            <>
+              <Suspense fallback={null}>
+                <FluidBackground />
+              </Suspense>
+              <CustomCursor />
+              <CustomScrollbar />
+
+              <div className="relative z-10">
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <AnimatedRoutes />
+                </BrowserRouter>
+              </div>
+            </>
+          )}
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ReactLenis>
+  );
+};
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -66,7 +74,7 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       {shouldShowGlobal && <InitialLoadReveal />}
-      <Suspense fallback={<PageLoader />}>
+      <Suspense fallback={null}>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Index />} />
           <Route path="/case-studies" element={<CaseStudies />} />

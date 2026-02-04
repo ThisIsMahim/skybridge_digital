@@ -6,7 +6,7 @@ import { cn } from "../lib/utils";
 const testimonialsRaw = [
     {
         quote:
-            "Skybridge Digital completely transformed our online presence. Their strategic approach and stunning design helped us increase conversions by 200%.",
+            "Skybridge Systems completely transformed our online presence. Their strategic approach and stunning design helped us increase conversions by 200%.",
         author: "Sarah Jenkins",
         role: "CMO, Nexus Finance",
         company: "Nexus Finance",

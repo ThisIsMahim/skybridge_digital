@@ -158,7 +158,7 @@ const AdminDashboard = () => {
         {/* Footer */}
         {sidebarOpen && (
           <div className="p-4 border-t border-white/10">
-            <p className="text-xs text-white/50">© 2024 Skybridge Digital</p>
+            <p className="text-xs text-white/50">© 2024 Skybridge Systems</p>
           </div>
         )}
       </aside>

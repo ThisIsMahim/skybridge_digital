@@ -86,7 +86,7 @@ const Navbar = () => {
             <Link to="/" className="block hover:opacity-80 transition-opacity">
               <img
                 src={skybridgeLogo}
-                alt="Skybridge Digital"
+                alt="Skybridge Systems"
                 className="h-10 group-hover:h-16 w-auto object-contain brightness-0 invert transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]"
               />
             </Link>
@@ -97,7 +97,7 @@ const Navbar = () => {
             <Button
               asChild
               size="sm"
-              className="rounded-full px-5 h-10 text-xs font-bold uppercase tracking-widest bg-accent text-accent-foreground hover:bg-accent/90 shadow-[0_0_15px_-3px_hsl(var(--accent))]"
+              className="rounded-full px-2 sm:px-5 h-10 text-xs font-bold uppercase tracking-widest bg-accent text-accent-foreground hover:bg-accent/90 shadow-[0_0_15px_-3px_hsl(var(--accent))]"
             >
               <Link to="/contact">
                 Contact Us

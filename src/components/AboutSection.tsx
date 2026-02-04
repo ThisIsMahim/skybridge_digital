@@ -9,7 +9,7 @@ const timelineItems = [
   {
     year: "2018",
     title: "Foundation",
-    description: "Skybridge Digital was born from a vision to unite strategy, design, and technology under one roof.",
+    description: "Skybridge Systems was born from a vision to unite strategy, design, and technology under one roof.",
   },
   {
     year: "2019",
@@ -86,16 +86,16 @@ const AboutSection = () => {
                   key={item.year}
                   ref={(el) => (itemsRef.current[index] = el)}
                   className={`relative pl-12 group transition-all duration-500 ease-out py-8 ${activeYear === item.year
-                      ? "opacity-100 blur-none scale-100"
-                      : "opacity-30 blur-[2px] scale-95"
+                    ? "opacity-100 blur-none scale-100"
+                    : "opacity-30 blur-[2px] scale-95"
                     }`}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   {/* Timeline dot */}
                   <div
                     className={`absolute left-0 top-8 -translate-x-1/2 w-3 h-3 rounded-full transition-colors duration-500 ${activeYear === item.year
-                        ? "bg-accent scale-125"
-                        : "bg-foreground group-hover:bg-accent"
+                      ? "bg-accent scale-125"
+                      : "bg-foreground group-hover:bg-accent"
                       }`}
                   />
 
@@ -103,8 +103,8 @@ const AboutSection = () => {
                   <div className="space-y-4">
                     <span
                       className={`font-display font-extrabold text-6xl lg:text-7xl transition-opacity duration-500 ${activeYear === item.year
-                          ? "text-accent opacity-100"
-                          : "text-accent opacity-20 group-hover:opacity-40"
+                        ? "text-accent opacity-100"
+                        : "text-accent opacity-20 group-hover:opacity-40"
                         }`}
                     >
                       {item.year}
