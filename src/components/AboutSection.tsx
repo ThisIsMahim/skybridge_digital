@@ -12,16 +12,6 @@ const timelineItems = [
     description: "Skybridge Systems was born from a vision to unite strategy, design, and technology under one roof.",
   },
   {
-    year: "2019",
-    title: "Growth & Expansion",
-    description: "We expanded our team and capabilities, taking on enterprise clients across multiple industries.",
-  },
-  {
-    year: "2021",
-    title: "Innovation Lab",
-    description: "Launched our R&D initiative, pioneering new approaches to digital transformation.",
-  },
-  {
     year: "2023",
     title: "Global Reach",
     description: "Our methodology now powers brands in 15+ countries, bridging gaps across markets.",

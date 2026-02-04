@@ -72,7 +72,7 @@ const Hero = () => {
 
               <LiquidDistortion>
                 <Link
-                  to="/work"
+                  to="/case-studies"
                   className="px-4 sm:px-6 py-4 text-xs sm:text-sm font-medium uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
                 >
                   View Our Work
