@@ -7,7 +7,7 @@ import { Github, Linkedin, Mail } from "lucide-react";
 gsap.registerPlugin(ScrollTrigger);
 
 import mahimImage from "../assets/mahim-masrafi.png";
-import touhidulImage from "../assets/touhidul-islam.png";
+import touhidulImage from "../assets/touhidul-islam-v2.png";
 
 const teamMembers = [
     {
