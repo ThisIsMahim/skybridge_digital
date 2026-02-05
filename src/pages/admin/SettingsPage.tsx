@@ -15,14 +15,33 @@ const AdminSettingsPage = () => {
         confirm: ""
     });
 
-    const handleUpdatePassword = (e: React.FormEvent) => {
+    const handleUpdatePassword = async (e: React.FormEvent) => {
         e.preventDefault();
         if (passwords.new !== passwords.confirm) {
             toast.error("New passwords do not match");
             return;
         }
-        // TODO: Implement API call when backend supports it
-        toast.info("Password update functionality coming soon");
+
+        try {
+            const res = await fetch(`${API_URL}/auth/profile`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                },
+                body: JSON.stringify({ password: passwords.new })
+            });
+
+            if (res.ok) {
+                toast.success("Password updated successfully");
+                setPasswords({ current: "", new: "", confirm: "" });
+            } else {
+                const data = await res.json();
+                toast.error(data.message || "Failed to update password");
+            }
+        } catch (error) {
+            toast.error("An error occurred");
+        }
     };
 
     return (

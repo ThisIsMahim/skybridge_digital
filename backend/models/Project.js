@@ -5,16 +5,75 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: {
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  client: {
+    type: String,
+    required: true,
+  },
+  industry: {
+    type: String,
+    required: true,
+    enum: ["SEO", "Web Design", "Marketing", "Branding"],
+  },
+  challenge: {
+    type: String,
+    required: true,
+  },
+  solution: {
+    type: String,
+    required: true,
+  },
+  metric: {
     type: String,
     required: true,
   },
   imageUrl: {
-    type: String, // URL to image (can be hosted elsewhere or uploaded)
+    type: String,
     required: true,
   },
+  challengeImage: {
+    type: String,
+    required: true,
+  },
+  solutionImage: {
+    type: String,
+    required: true,
+  },
+  logo: {
+    type: String,
+    required: true,
+  },
+  summary: {
+    type: String,
+    required: true,
+  },
+  overview: {
+    type: String,
+    required: true,
+  },
+  problemDetail: {
+    type: String,
+    required: true,
+  },
+  approach: {
+    type: String,
+    required: true,
+  },
+  outcome: {
+    type: String,
+    required: true,
+  },
+  testimonial: {
+    quote: { type: String, required: true },
+    author: { type: String, required: true },
+    role: { type: String, required: true },
+  },
   tags: [{
-    type: String, // e.g., ["React", "Node.js"]
+    type: String,
   }],
   liveLink: {
     type: String,
