@@ -63,7 +63,7 @@ const services: Service[] = [
     title: "Search Engine Optimization",
     description: "Data-driven strategies to dominate rankings. We analyze and optimize to ensure your brand reaches the right audience.",
     theme: {
-      bg: "bg-[#1a4048]",
+      bg: "bg-[#331b0a]",
       text: "text-white",
       accent: "text-cyan-200",
       border: "border-white/10",
@@ -102,7 +102,7 @@ const ServiceCard = ({ service, index, range, targetScale, progress }: ServiceCa
   const finalScale = isMobile ? 1 : scale;
 
   return (
-    <div ref={container} className={`min-h-[80vh] lg:h-screen flex items-center justify-center relative lg:sticky lg:top-0 ${service.theme.bg}`}>
+    <div ref={container} className={`min-h-[80vh] lg:h-screen flex items-center justify-center relative lg:sticky lg:top-0 bg-transparent`}>
       <motion.div
         style={{ scale: finalScale, top: isMobile ? 0 : `calc(-5vh + ${index * 25}px)` }}
         className={`relative flex flex-col md:flex-row gap-4 lg:gap-8 w-full max-w-6xl mx-auto p-4 lg:p-8 h-auto lg:h-[60vh] rounded-[2rem] border ${service.theme.border} overflow-hidden ${service.theme.bg} will-change-transform`}
@@ -166,7 +166,7 @@ const ServicesSection = () => {
   });
 
   return (
-    <section ref={container} className="relative bg-black">
+    <section ref={container} className="relative bg-transparent">
       {/* Header - Stays put until scrolled past or could be part of the flow */}
       <div className="h-[50vh] flex flex-col items-center justify-center sticky top-0 z-0 pointer-events-none">
         <span className="text-cyan-400 text-sm font-medium tracking-[0.3em] uppercase mb-4">

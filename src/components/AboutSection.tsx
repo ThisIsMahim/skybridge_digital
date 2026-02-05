@@ -46,7 +46,7 @@ const AboutSection = () => {
   );
 
   return (
-    <section id="about" className="min-h-screen py-24">
+    <section id="about" className="min-h-screen py-24 bg-transparent">
       <div className="w-full px-6 lg:px-12 xl:px-20">
         <div className="grid lg:grid-cols-[1fr_1.5fr] gap-16 lg:gap-32">
           {/* Sticky Left Column */}

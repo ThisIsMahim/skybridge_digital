@@ -20,7 +20,7 @@ const teamMembers = [
             { icon: Github, href: "#", label: "GitHub" },
         ],
         image: mahimImage,
-        gradient: "from-blue-500/20 to-cyan-500/20", // Deep Ocean/Cyan
+        gradient: "from-white/10 to-white/5",
     },
     {
         name: "Touhidul Islam",
@@ -32,7 +32,7 @@ const teamMembers = [
             { icon: Mail, href: "#", label: "Email" },
         ],
         image: touhidulImage,
-        gradient: "from-emerald-500/20 to-green-500/20", // Growth/Green
+        gradient: "from-white/10 to-white/5",
     },
 ];
 
@@ -67,7 +67,7 @@ const TeamSection = () => {
     );
 
     return (
-        <section ref={containerRef} id="team" className="py-24 bg-background relative overflow-hidden">
+        <section ref={containerRef} id="team" className="py-24 bg-transparent relative overflow-hidden">
             <div className="container px-4 mx-auto">
                 <div className="mb-16 text-center space-y-4">
                     <span className="text-accent text-xs font-bold tracking-[0.2em] uppercase">

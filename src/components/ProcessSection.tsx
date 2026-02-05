@@ -196,9 +196,9 @@ const ProcessSection = () => {
   return (
     <section ref={sectionRef} id="process" className="relative w-full">
       {/* Background Sticky Canvas */}
-      <div ref={stickyRef} className="sticky top-0 left-0 w-full h-screen -z-10 overflow-hidden bg-background">
+      <div ref={stickyRef} className="sticky top-0 left-0 w-full h-screen -z-10 overflow-hidden bg-transparent">
         {/* Reduced overlay opacity to make canvas visible */}
-        <div className="absolute inset-0 bg-background/40 z-10" />
+        <div className="absolute inset-0 bg-transparent z-10" />
 
         {!imagesLoaded && (
           <div className="absolute inset-0 flex items-center justify-center text-muted-foreground z-0">
@@ -209,8 +209,10 @@ const ProcessSection = () => {
           ref={canvasRef}
           className="w-full h-full object-cover opacity-60 blur-[1.5px]"
         />
+        {/* Top Transition Blur */}
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black/80 via-black/40 to-transparent z-10 pointer-events-none" />
         {/* Bottom Transition Blur */}
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10 pointer-events-none" />
       </div>
 
       {/* Foreground Content */}
