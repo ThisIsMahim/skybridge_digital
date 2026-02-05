@@ -6,6 +6,9 @@ import { Github, Linkedin, Mail } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
+import mahimImage from "../assets/mahim-masrafi.png";
+import touhidulImage from "../assets/touhidul-islam.png";
+
 const teamMembers = [
     {
         name: "C.M. Mahim Masrafi",
@@ -16,7 +19,7 @@ const teamMembers = [
             { icon: Linkedin, href: "#", label: "LinkedIn" },
             { icon: Github, href: "#", label: "GitHub" },
         ],
-        image: "https://placehold.co/400x400/png",
+        image: mahimImage,
         gradient: "from-blue-500/20 to-cyan-500/20", // Deep Ocean/Cyan
     },
     {
@@ -28,7 +31,7 @@ const teamMembers = [
             { icon: Linkedin, href: "#", label: "LinkedIn" },
             { icon: Mail, href: "#", label: "Email" },
         ],
-        image: "https://placehold.co/400x400/png",
+        image: touhidulImage,
         gradient: "from-emerald-500/20 to-green-500/20", // Growth/Green
     },
 ];
@@ -85,18 +88,18 @@ const TeamSection = () => {
                             {/* Card Base */}
                             <div className="bg-secondary/30 backdrop-blur-sm border border-border/50 rounded-[2rem] p-6 text-center transition-all duration-500 hover:shadow-2xl hover:bg-secondary/50 hover:-translate-y-2 h-full flex flex-col">
 
-                                {/* Image Area with Circular Gradient Background */}
+                                {/* Image Area with Gradient Background */}
                                 <div className="relative mx-auto mb-6 w-48 h-48 flex items-center justify-center">
-                                    {/* Circle Background */}
-                                    <div className={`absolute inset-0 rounded-full bg-gradient-to-tr ${member.gradient} blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500`} />
-                                    <div className={`absolute inset-4 rounded-full bg-gradient-to-tr ${member.gradient} opacity-20 group-hover:scale-110 transition-transform duration-500 ease-out`} />
+                                    {/* Background Glow */}
+                                    <div className={`absolute inset-0 rounded-2xl bg-gradient-to-tr ${member.gradient} blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500`} />
+                                    <div className={`absolute inset-4 rounded-xl bg-gradient-to-tr ${member.gradient} opacity-20 group-hover:scale-110 transition-transform duration-500 ease-out`} />
 
                                     {/* Image */}
                                     <img
                                         src={member.image}
                                         alt={member.name}
                                         loading="lazy"
-                                        className="relative w-full h-full object-cover rounded-full z-10 border-4 border-background/50 shadow-sm"
+                                        className="relative w-full h-full object-cover object-top rounded-2xl z-10 border-4 border-background/50 shadow-sm"
                                     />
 
 
