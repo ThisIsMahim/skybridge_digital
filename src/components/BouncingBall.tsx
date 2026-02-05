@@ -42,6 +42,14 @@ const BouncingBall = () => {
     const { dockingCenter, checkDocking } = useDockingZone();
     const [isHoveringZone, setIsHoveringZone] = useState(false);
 
+    // Performance: Detect mobile and limit FPS
+    const [isMobile] = useState(() =>
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        window.innerWidth < 768
+    );
+    const FPS_LIMIT = isMobile ? 30 : 60;  // Half framerate on mobile for performance
+    const lastFrameTimeRef = useState({ current: 0 })[0];
+
     useEffect(() => {
         const handleResize = () => {
             setBounds({
@@ -57,6 +65,11 @@ const BouncingBall = () => {
 
     useAnimationFrame((deltaTime) => {
         if (bounds.width === 0 || isDragging || isChatDocked || isHovering) return;
+
+        // FPS limiting for performance on mobile
+        const now = performance.now();
+        if (now - lastFrameTimeRef.current < 1000 / FPS_LIMIT) return;
+        lastFrameTimeRef.current = now;
 
         const newState = update(deltaTime, bounds);
 

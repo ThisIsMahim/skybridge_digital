@@ -84,7 +84,7 @@ function LiquidEther({
             }
             init(container) {
                 this.container = container;
-                this.pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+                this.pixelRatio = Math.min(window.devicePixelRatio || 1, 1.0);
                 this.resize();
                 this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
                 this.renderer.autoClear = false;
@@ -739,11 +739,14 @@ function LiquidEther({
 
         class Simulation {
             constructor(options) {
+                // Detect mobile for performance optimization
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+
                 this.options = {
-                    iterations_poisson: 32,
-                    iterations_viscous: 32,
+                    iterations_poisson: 8,  // Reduced from 32 for 75% performance gain
+                    iterations_viscous: 4,  // Reduced from 32 for 87.5% performance gain
                     mouse_force: 20,
-                    resolution: 0.5,
+                    resolution: isMobile ? 0.2 : 0.3,  // Lower resolution on mobile
                     cursor_size: 100,
                     viscous: 30,
                     isBounce: false,

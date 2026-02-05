@@ -17,4 +17,16 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Use esbuild for faster minification
+    minify: 'esbuild',
+    // Disable sourcemaps in production for smaller bundle
+    sourcemap: mode !== 'production',
+    // Drop console in production
+    esbuild: {
+      drop: mode === 'production' ? ['console', 'debugger'] : [],
+    },
+    // Chunk size warning limit
+    chunkSizeWarningLimit: 1000,
+  },
 }));

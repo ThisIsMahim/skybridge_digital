@@ -23,17 +23,29 @@ const Navbar = () => {
   const location = useLocation();
 
   useEffect(() => {
+    let ticking = false;
+    let lastKnownScrollY = 0;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      lastKnownScrollY = window.scrollY;
 
-      // Determine visibility state (hide on scroll down, show on scroll up)
-      if (currentScrollY > lastScrollY && currentScrollY > 100 && !mobileMenuOpen) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = lastKnownScrollY;
+
+          // Determine visibility state (hide on scroll down, show on scroll up)
+          if (currentScrollY > lastScrollY && currentScrollY > 100 && !mobileMenuOpen) {
+            setIsVisible(false);
+          } else {
+            setIsVisible(true);
+          }
+
+          setLastScrollY(currentScrollY);
+          ticking = false;
+        });
+
+        ticking = true;
       }
-
-      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });

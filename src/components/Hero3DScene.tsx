@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -49,12 +49,25 @@ function MinimalObject() {
 }
 
 export default function Hero3DScene() {
+    // Detect mobile for performance optimization
+    const [isMobile] = useState(() =>
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        window.innerWidth < 768
+    );
+
     return (
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
             <Canvas
                 camera={{ position: [0, 0, 6], fov: 45 }}
-                gl={{ alpha: true, antialias: true }}
-                dpr={[1, 2]}
+                gl={{
+                    alpha: true,
+                    antialias: !isMobile,  // Disable AA on mobile for performance
+                    powerPreference: 'high-performance',
+                    stencil: false,
+                    depth: false
+                }}
+                dpr={isMobile ? 1 : [1, 1.5]}  // Lower DPR on mobile
+                frameloop="always"  // Keep always for smooth animation
             >
                 <MinimalObject />
             </Canvas>
