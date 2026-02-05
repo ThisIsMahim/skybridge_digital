@@ -14,6 +14,7 @@ import {
 import { API_URL, getAuthHeader } from "@/config/api";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
+import ImageUpload from "@/components/admin/ImageUpload";
 
 const AdminProjectsPage = () => {
     const [projects, setProjects] = useState<any[]>([]);
@@ -25,6 +26,8 @@ const AdminProjectsPage = () => {
         title: "",
         description: "",
         imageUrl: "",
+        challengeImage: "",
+        solutionImage: "",
         liveLink: "",
         repoLink: "",
         tags: "",
@@ -55,7 +58,9 @@ const AdminProjectsPage = () => {
             setFormData({
                 title: project.title,
                 description: project.description,
-                imageUrl: project.imageUrl,
+                imageUrl: project.imageUrl || "",
+                challengeImage: project.challengeImage || "",
+                solutionImage: project.solutionImage || "",
                 liveLink: project.liveLink || "",
                 repoLink: project.repoLink || "",
                 tags: project.tags.join(", "),
@@ -67,6 +72,8 @@ const AdminProjectsPage = () => {
                 title: "",
                 description: "",
                 imageUrl: "",
+                challengeImage: "",
+                solutionImage: "",
                 liveLink: "",
                 repoLink: "",
                 tags: "",
@@ -160,15 +167,24 @@ const AdminProjectsPage = () => {
                                     required
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Image URL</label>
-                                <Input
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <ImageUpload
+                                    label="Main Image"
                                     value={formData.imageUrl}
-                                    onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
-                                    placeholder="https://..."
-                                    required
+                                    onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+                                />
+                                <ImageUpload
+                                    label="Challenge Image"
+                                    value={formData.challengeImage}
+                                    onChange={(url) => setFormData(prev => ({ ...prev, challengeImage: url }))}
+                                />
+                                <ImageUpload
+                                    label="Solution Image"
+                                    value={formData.solutionImage}
+                                    onChange={(url) => setFormData(prev => ({ ...prev, solutionImage: url }))}
                                 />
                             </div>
+
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">Live Link</label>

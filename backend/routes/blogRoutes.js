@@ -3,7 +3,19 @@ const router = express.Router();
 const Blog = require('../models/Blog');
 const { protect, admin } = require('../middleware/authMiddleware');
 
-// @desc    Get all blogs
+// @desc    Get all blogs (Admin - includes drafts)
+// @route   GET /api/blogs/manage/all
+// @access  Private/Admin
+router.get('/manage/all', protect, admin, async (req, res) => {
+  try {
+    const blogs = await Blog.find({}).sort({ createdAt: -1 });
+    res.json(blogs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// @desc    Get all blogs (Public - published only)
 // @route   GET /api/blogs
 // @access  Public
 router.get('/', async (req, res) => {

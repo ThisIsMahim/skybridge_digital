@@ -8,6 +8,8 @@ export interface CaseStudy {
     solution: string;
     metric: string;
     image: string;
+    challengeImage: string;
+    solutionImage: string;
     logo: string;
     summary: string;
     overview: string;
@@ -22,67 +24,75 @@ export interface CaseStudy {
 }
 
 export const caseStudies: CaseStudy[] = [
-    {
-        id: "technova-seo-growth",
-        title: "How we increased TechNova's organic traffic by 150% in 6 months",
-        client: "TechNova Solutions",
-        industry: "SEO",
-        challenge: "Struggling with low visibility and declining organic traffic despite high-quality content.",
-        solution: "Implemented a comprehensive SEO audit, technical optimization, and a targeted backlink strategy.",
-        metric: "+150% Traffic",
-        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
-        logo: "https://cdn-icons-png.flaticon.com/512/2838/2838912.png",
-        summary: "Recovered lost rankings and drove high-quality organic leads.",
-        overview: "TechNova Solutions is a leading B2B SaaS provider. They approached us to help them regain their search engine rankings and drive more qualified leads through organic search.",
-        problemDetail: "TechNova had excellent product documentation and blog content, but technical SEO issues and a weak domain authority were holding them back. They were ranking on page 2 or 3 for high-value keywords, resulting in missed opportunities.",
-        approach: "We started with a deep-dive technical audit, fixing crawl errors and optimizing site speed. We then revamped their keyword strategy to target high-intent search terms and executed a white-hat link-building campaign to boost authority.",
-        outcome: "Within 6 months, organic traffic surged by 150%. TechNova now ranks in the top 3 results for their primary keywords, leading to a significant increase in demo requests.",
-        testimonial: {
-            quote: "The results speak for themselves. detailed, data-driven, and incredibly effective.",
-            author: "Sarah Jenkins",
-            role: "CMO at TechNova"
-        }
+  {
+    id: "crypto-fintech-dashboard",
+    title: "High-Fidelity Crypto Investment Dashboard",
+    client: "Dharmendra Kumar",
+    industry: "Web Design",
+    challenge: "The client needed a high-trust, secure frontend for a crypto investment platform. The primary challenge was visualizing complex real-time data (ROI, Market Trends) and managing intricate wallet states (Deposit/Withdrawal flows) without backend latency.",
+    solution: "We engineered a component-driven React architecture. We utilized Chart.js for real-time market visualization and built a mock-wallet ecosystem to simulate transaction flows instantly. The UI was hardened with 2FA visual flows to establish user trust immediately.",
+    metric: "MVP Delivered in 10 Days",
+    image: "/images/projects/crypto-dashboard-main.jpg",
+    challengeImage: "/images/projects/crypto-challenge.jpg",
+    solutionImage: "/images/projects/crypto-solution.jpg",
+    logo: "/images/clients/crypto-logo.png",
+    summary: "A React-based financial interface focusing on real-time data visualization and secure user flows.",
+    overview: "Fintech interfaces live or die by trust. We built a 'Systems-First' dashboard that prioritizes data clarity and security visualization.",
+    problemDetail: "Investors need to see their money grow in real-time. Static tables were not enough; the client needed dynamic interaction.",
+    approach: "We adopted a 'Component-First' strategy, breaking the dashboard into isolated widgets (Wallet, ROI, Market) for faster rendering.",
+    outcome: "Successfully delivered a high-performance MVP that allowed the client to secure backend funding.",
+    testimonial: {
+      quote: "The frontend mockups and logic flows were delivered exactly to spec, allowing us to move straight to backend integration.",
+      author: "Dharmendra Kumar",
+      role: "Founder",
     },
-    {
-        id: "greenearth-redesign",
-        title: "Revamping GreenEarth's digital presence to boost conversion by 40%",
-        client: "GreenEarth Organics",
-        industry: "Web Design",
-        challenge: "An outdated website that failed to communicate the brand's premium value and had poor mobile usability.",
-        solution: "Designed a modern, responsive e-commerce experience with a focus on user journey and brand storytelling.",
-        metric: "+40% Sales",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-        logo: "https://cdn-icons-png.flaticon.com/512/1598/1598431.png",
-        summary: "Modernized the e-commerce experience to boost mobile conversions.",
-        overview: "GreenEarth Organics sells premium organic produce. They needed a website that reflected their commitment to quality and made purchasing easy for mobile users.",
-        problemDetail: "The old site was clunky, difficult to navigate on phones, and didn't showcase the vibrant imagery of their products. Bounce rates were high, and cart abandonment was a major issue.",
-        approach: "We rebuilt the site from the ground up using a headless CMS for speed and flexibility. We implemented a clean, minimal design that highlighted product photography and streamlined the checkout process to just 3 steps.",
-        outcome: "The new site launched to rave reviews. Mobile conversion rates doubled, and overall sales increased by 40% in the first quarter post-launch.",
-        testimonial: {
-            quote: "Our customers love the new look! It's so much easier for them to shop, and our sales numbers prove it.",
-            author: "David Chen",
-            role: "Founder"
-        }
+  },
+  {
+    id: "sub4sub-saas-engine",
+    title: "Gamified Micro-Tasking SaaS Engine",
+    client: "Confidential (SaaS Sector)",
+    industry: "Web Design",
+    challenge: "Replicating a mobile-only 'Sub4Sub' coin economy on the web. The critical technical hurdle was preventing fraud by verifying YouTube actions (Likes/Subs) in real-time before awarding virtual currency.",
+    solution: "We architected a Next.js Full-Stack application integrating the YouTube Data API for verification. We implemented 'Better Auth' for secure sessions and a custom internal ledger system to manage the 'Coin-to-BDT' exchange rates and withdrawal requests.",
+    metric: "100% Automated API Verification",
+    image: "/images/projects/sub4sub-main.jpg",
+    challengeImage: "/images/projects/sub4sub-challenge.jpg",
+    solutionImage: "/images/projects/sub4sub-solution.jpg",
+    logo: "/images/clients/saas-logo.png",
+    summary: "A complex full-stack SaaS application connecting social APIs with a virtual fintech economy.",
+    overview: "This project required bridging external platforms (YouTube) with internal logic (Wallet System) securely.",
+    problemDetail: "Users often claim rewards without doing the task. We needed a 'Trust-But-Verify' system using Google's APIs.",
+    approach: "We used Next.js for server-side API handling to keep keys secure, ensuring no user could spoof a transaction.",
+    outcome: "A fully functional web-replica of the mobile app, enabling a new revenue stream for the client.",
+    testimonial: {
+      quote: "Skybridge Systems handled the complex API logic and wallet security, delivering a stable functional clone of our app.",
+      author: "Lead Contractor",
+      role: "Project Lead",
     },
-    {
-        id: "urbanbites-viral",
-        title: "Scaling UrbanBites' social engagement by 300% with viral content",
-        client: "UrbanBites",
-        industry: "Marketing",
-        challenge: "Building brand awareness in a crowded food delivery market with a limited ad budget.",
-        solution: "A creative social media campaign leveraging user-generated content and influencer partnerships.",
-        metric: "300% Engagement",
-        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop",
-        logo: "https://cdn-icons-png.flaticon.com/512/2504/2504914.png",
-        summary: "Ignited local brand awareness through viral social campaigns.",
-        overview: "UrbanBites is a new food delivery app focusing on local eats. They needed to make a splash to compete with established giants.",
-        problemDetail: "With a small budget, competing on paid ads was impossible. They needed a way to grow organically and build a loyal community of foodies.",
-        approach: "We launched the 'Hidden Gems' campaign, encouraging users to share their favorite local spots. We partnered with micro-influencers to kickstart the trend and used short-form video content on TikTok and Reels.",
-        outcome: "The campaign went viral locally, driving a 300% increase in social engagement and a 50% spike in app downloads during the campaign period.",
-        testimonial: {
-            quote: "We didn't expect to grow this fast! The strategy was perfect for our brand and budget.",
-            author: "Jessica Lee",
-            role: "Marketing Director"
-        }
-    }
+  },
+  {
+    id: "softsaasi-growth-campaign",
+    title: "Video Marketing & Ad Infrastructure",
+    client: "Softsaasi",
+    industry: "Marketing",
+    challenge: "The client had a great product but low visibility. They needed a rapid injection of brand awareness and a structured ad pipeline within a strict 2-week window.",
+    solution: "We executed a 'Growth Sprint.' We produced and edited 2 high-conversion video ads and designed 4 banner creatives. We then set up the Meta Business Suite backend to target specific audience demographics effectively.",
+    metric: "2-Week Rapid Launch",
+    image: "/images/projects/softsaasi-main.jpg",
+    challengeImage: "/images/projects/softsaasi-challenge.jpg",
+    solutionImage: "/images/projects/softsaasi-solution.jpg",
+    logo: "/images/clients/softsaasi-logo.png",
+    summary: "End-to-end creative production and ad management sprint for a software brand.",
+    overview: "Marketing is a system, not just art. We built the creative assets and the delivery pipeline simultaneously.",
+    problemDetail: "Static posts were not converting. The client needed dynamic video content to stop the scroll.",
+    approach: "We used a 'Video-First' strategy, prioritizing motion content for the top of the funnel.",
+    outcome: "Delivered a complete library of ad assets and a configured ad manager ready for scaling.",
+    testimonial: {
+      quote: "Delivered professional video assets and handled the ad setup efficiently within our tight timeline.",
+      author: "Softsaasi Team",
+      role: "Marketing Director",
+    },
+  },
 ];
+
+export default caseStudies;

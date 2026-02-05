@@ -14,6 +14,7 @@ import {
 import { API_URL, getAuthHeader } from "@/config/api";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
+import ImageUpload from "@/components/admin/ImageUpload";
 
 const AdminBlogsPage = () => {
     const [blogs, setBlogs] = useState<any[]>([]);
@@ -33,17 +34,13 @@ const AdminBlogsPage = () => {
 
     const fetchBlogs = async () => {
         try {
-            const res = await fetch(`${API_URL}/blogs`); // Public endpoint (might need filter for unpublished in admin)
-            // Note: For admin we essentially want ALL blogs including drafts.
-            // The current Public endpoint might filter published only. 
-            // Let's assume for now we use the same endpoint but in a real app we'd have a specific admin endpoint.
-            // Or we can modify the backend to accept a query param? For now sticking to what we have.
-            // If the backend filters `isPublished: true`, we might not see drafts here.
-            // I will assume for now I can see them or I will just list what I can.
+            // Fetch from admin endpoint to get all blogs including drafts
+            const res = await fetch(`${API_URL}/blogs/manage/all`, {
+                headers: getAuthHeader()
+            });
 
             if (res.ok) {
                 const data = await res.json();
-                // In a real scenario, we'd need an endpoint that returns ALL posts (published and drafts)
                 setBlogs(data);
             }
         } catch (error) {
@@ -168,11 +165,10 @@ const AdminBlogsPage = () => {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Cover Image URL</label>
-                                <Input
+                                <ImageUpload
+                                    label="Cover Image"
                                     value={formData.coverImage}
-                                    onChange={e => setFormData({ ...formData, coverImage: e.target.value })}
-                                    placeholder="https://..."
+                                    onChange={(url) => setFormData(prev => ({ ...prev, coverImage: url }))}
                                 />
                             </div>
 

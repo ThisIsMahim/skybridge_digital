@@ -1,4 +1,3 @@
-
 import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { caseStudies } from "@/data/caseStudies";
@@ -122,52 +121,72 @@ const CaseStudyDetail = () => {
                         {/* Main Body */}
                         <div className="lg:col-span-8 space-y-16 lg:space-y-24">
 
-                            {/* The Problem */}
-                            <section>
-                                <h2 className="font-display text-3xl font-bold mb-6 flex items-center gap-3">
-                                    <span className="w-12 h-1 rounded-full bg-destructive/70" />
-                                    The Pain Point
-                                </h2>
-                                <h3 className="text-2xl font-medium mb-4 text-foreground/90">
-                                    {study.challenge}
-                                </h3>
-                                <p className="text-lg text-muted-foreground leading-relaxed">
-                                    {study.problemDetail}
-                                </p>
+                            {/* The Problem Area */}
+                            <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                {/* Image before Challenge */}
+                                <div className="rounded-2xl overflow-hidden h-64 md:h-auto">
+                                    <img
+                                        src={study.challengeImage}
+                                        alt="Challenge Context"
+                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                                    />
+                                </div>
+                                <div>
+                                    <h2 className="font-display text-3xl font-bold mb-6 flex items-center gap-3">
+                                        <span className="w-12 h-1 rounded-full bg-destructive/70" />
+                                        The Pain Point
+                                    </h2>
+                                    <h3 className="text-2xl font-medium mb-4 text-foreground/90">
+                                        {study.challenge}
+                                    </h3>
+                                    <p className="text-lg text-muted-foreground leading-relaxed">
+                                        {study.problemDetail}
+                                    </p>
+                                </div>
                             </section>
 
-                            {/* Our Approach */}
-                            <section>
-                                <h2 className="font-display text-3xl font-bold mb-6 flex items-center gap-3">
-                                    <span className="w-12 h-1 rounded-full bg-primary" />
-                                    Our Strategy
-                                </h2>
-                                <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                                    {study.approach}
-                                </p>
-                                {/* Simulated Checkpoints/Steps */}
-                                <div className="space-y-4">
-                                    <div className="flex items-start gap-3">
-                                        <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                                        <div>
-                                            <h4 className="font-bold">Deep Dive Analysis</h4>
-                                            <p className="text-muted-foreground">Understanding the core bottlenecks.</p>
+                            {/* Our Approach Area */}
+                            <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                <div>
+                                    <h2 className="font-display text-3xl font-bold mb-6 flex items-center gap-3">
+                                        <span className="w-12 h-1 rounded-full bg-primary" />
+                                        Our Strategy
+                                    </h2>
+                                    <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                                        {study.approach}
+                                    </p>
+                                    {/* Simulated Checkpoints/Steps */}
+                                    <div className="space-y-4">
+                                        <div className="flex items-start gap-3">
+                                            <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                                            <div>
+                                                <h4 className="font-bold">Deep Dive Analysis</h4>
+                                                <p className="text-muted-foreground">Understanding the core bottlenecks.</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                                            <div>
+                                                <h4 className="font-bold">Strategic Implementation</h4>
+                                                <p className="text-muted-foreground">{study.solution}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                                            <div>
+                                                <h4 className="font-bold">Continuous Optimization</h4>
+                                                <p className="text-muted-foreground">Monitoring metrics and adjusting for maximum impact.</p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="flex items-start gap-3">
-                                        <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                                        <div>
-                                            <h4 className="font-bold">Strategic Implementation</h4>
-                                            <p className="text-muted-foreground">{study.solution}</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-3">
-                                        <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                                        <div>
-                                            <h4 className="font-bold">Continuous Optimization</h4>
-                                            <p className="text-muted-foreground">Monitoring metrics and adjusting for maximum impact.</p>
-                                        </div>
-                                    </div>
+                                </div>
+                                {/* Image after Solution (actually alongside it now in grid) */}
+                                <div className="rounded-2xl overflow-hidden h-64 md:h-auto">
+                                    <img
+                                        src={study.solutionImage}
+                                        alt="Solution Execution"
+                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                                    />
                                 </div>
                             </section>
 
