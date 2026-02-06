@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import WorkGridCard from "@/components/WorkGridCard";
 import { caseStudies } from "@/data/caseStudies";
 import { motion, AnimatePresence } from "framer-motion";
+import { API_URL } from "@/config/api";
 
 
 const containerVariants = {
@@ -54,11 +55,53 @@ const CaseStudies = () => {
         }
     };
 
+    const [projects, setProjects] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const response = await fetch(`${API_URL}/projects`);
+                if (response.ok) {
+                    const data = await response.json();
+                    const mapped = data.map((p: any) => ({
+                        ...p,
+                        id: p._id,
+                        image: p.imageUrl,
+                        industry: p.industry || p.tags?.[0] || "Web Design",
+                        client: p.client || "Client",
+                        metric: p.metric || "Result",
+                        logo: p.logo || "",
+                        summary: p.summary || p.description || "",
+                        title: p.title,
+                        challenge: p.challenge,
+                        solution: p.solution,
+                        challengeImage: p.challengeImage,
+                        solutionImage: p.solutionImage,
+                        overview: p.overview,
+                        problemDetail: p.problemDetail,
+                        approach: p.approach,
+                        outcome: p.outcome,
+                        testimonial: p.testimonial || { quote: "", author: "", role: "" }
+                    }));
+                    setProjects(mapped);
+                }
+            } catch (error) {
+                console.error("Failed to fetch projects", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProjects();
+    }, []);
+
     const filteredProjects = useMemo(() => {
+        const sourceData = projects.length > 0 ? projects : [];
         return filter === "All Work"
-            ? caseStudies
-            : caseStudies.filter(p => p.industry === filter);
-    }, [filter]);
+            ? sourceData
+            : sourceData.filter(p => p.industry === filter);
+    }, [filter, projects]);
 
     return (
         <div className="min-h-screen bg-background text-foreground selection:bg-accent selection:text-accent-foreground">

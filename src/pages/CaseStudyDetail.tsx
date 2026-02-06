@@ -1,13 +1,60 @@
+import { useState, useEffect } from "react";
 import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
-import { caseStudies } from "@/data/caseStudies";
-import { ArrowLeft, Quote, CheckCircle2 } from "lucide-react";
+import { API_URL } from "@/config/api";
+import { ArrowLeft, Quote, CheckCircle2, ExternalLink, Github, Layers } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 const CaseStudyDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const study = caseStudies.find((s) => s.id === id);
+    const [study, setStudy] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchStudy = async () => {
+            if (!id) return;
+            try {
+                const res = await fetch(`${API_URL}/projects/${id}`);
+                if (res.ok) {
+                    const p = await res.json();
+                    const mapped = {
+                        ...p,
+                        id: p._id,
+                        image: p.imageUrl,
+                        industry: p.industry || p.tags?.[0] || "Web Design",
+                        client: p.client || "Client",
+                        metric: p.metric || "Result",
+                        logo: p.logo || "",
+                        summary: p.summary || p.description || "",
+                        testimonial: p.testimonial || { quote: "Project delivered successfully.", author: "Client", role: "CEO" },
+                        challenge: p.challenge || "The challenge details are currently being updated.",
+                        solution: p.solution || "The solution details are currently being updated.",
+                        challengeImage: p.challengeImage || p.imageUrl,
+                        solutionImage: p.solutionImage || p.imageUrl,
+                        overview: p.overview || p.description || "Project overview pending.",
+                        problemDetail: p.problemDetail || "Problem context pending.",
+                        approach: p.approach || "Strategic approach pending.",
+                        outcome: p.outcome || "Final outcome pending.",
+                        liveLink: p.liveLink,
+                        repoLink: p.repoLink,
+                        tags: p.tags || []
+                    };
+                    setStudy(mapped);
+                }
+            } catch (error) {
+                console.error("Failed to fetch study", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchStudy();
+    }, [id]);
+
+    if (loading) {
+        return <div className="min-h-screen grid place-items-center bg-black text-white">Loading...</div>;
+    }
 
     if (!study) {
         return <Navigate to="/case-studies" replace />;
@@ -73,14 +120,38 @@ const CaseStudyDetail = () => {
                             </div>
                         </motion.div>
                     </div>
+
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="flex flex-wrap gap-4 mt-8"
+                    >
+                        {study.liveLink && (
+                            <Button asChild className="rounded-full font-bold">
+                                <a href={study.liveLink} target="_blank" rel="noopener noreferrer">
+                                    <ExternalLink className="mr-2 h-4 w-4" /> Live Project
+                                </a>
+                            </Button>
+                        )}
+                        {study.repoLink && (
+                            <Button asChild variant="outline" className="rounded-full font-bold border-white/20 bg-white/5 hover:bg-white/10">
+                                <a href={study.repoLink} target="_blank" rel="noopener noreferrer">
+                                    <Github className="mr-2 h-4 w-4" /> Source Code
+                                </a>
+                            </Button>
+                        )}
+                    </motion.div>
                 </header>
 
                 {/* Main Content Image */}
-                <div className="w-full h-[40vh] lg:h-[60vh] bg-muted mb-16 lg:mb-24 overflow-hidden">
+                <div className="w-full h-[40vh] lg:h-[70vh] mb-16 lg:mb-24 relative group">
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10" />
                     <img
                         src={study.image}
                         alt="Project visualization"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-center shadow-2xl transition-transform duration-1000 group-hover:scale-[1.02]"
                     />
                 </div>
 
@@ -90,16 +161,32 @@ const CaseStudyDetail = () => {
 
                         {/* Sidebar / Info */}
                         <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-32 h-fit">
-                            <div className="bg-secondary/20 p-8 rounded-3xl border border-secondary/50">
+                            <div className="bg-secondary/20 p-8 rounded-3xl border border-secondary/50 backdrop-blur-sm">
                                 <h3 className="font-display text-xl font-bold mb-4">Project Overview</h3>
-                                <p className="text-muted-foreground leading-relaxed mb-6">
+                                <p className="text-muted-foreground leading-relaxed mb-6 text-sm lg:text-base">
                                     {study.overview}
                                 </p>
-                                <div className="space-y-4">
+                                <div className="space-y-6">
                                     <div className="flex flex-col">
                                         <span className="text-xs font-bold uppercase text-muted-foreground mb-1">Client</span>
-                                        <span className="font-medium">{study.client}</span>
+                                        <span className="font-medium text-lg">{study.client}</span>
                                     </div>
+
+                                    {/* Tech Stack for better view */}
+                                    {study.tags && study.tags.length > 0 && (
+                                        <div className="flex flex-col">
+                                            <span className="text-xs font-bold uppercase text-muted-foreground mb-2 flex items-center gap-2">
+                                                <Layers className="w-3 h-3" /> Technologies
+                                            </span>
+                                            <div className="flex flex-wrap gap-2">
+                                                {study.tags.map((tag: string) => (
+                                                    <span key={tag} className="px-2 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-medium">
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -124,7 +211,7 @@ const CaseStudyDetail = () => {
                             {/* The Problem Area */}
                             <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                                 {/* Image before Challenge */}
-                                <div className="rounded-2xl overflow-hidden h-64 md:h-auto">
+                                <div className="rounded-2xl overflow-hidden h-64 md:h-80 shadow-2xl border border-white/5 rotate-1 hover:rotate-0 transition-all duration-500">
                                     <img
                                         src={study.challengeImage}
                                         alt="Challenge Context"
@@ -181,7 +268,7 @@ const CaseStudyDetail = () => {
                                     </div>
                                 </div>
                                 {/* Image after Solution (actually alongside it now in grid) */}
-                                <div className="rounded-2xl overflow-hidden h-64 md:h-auto">
+                                <div className="rounded-2xl overflow-hidden h-64 md:h-80 shadow-2xl border border-white/5 -rotate-1 hover:rotate-0 transition-all duration-500">
                                     <img
                                         src={study.solutionImage}
                                         alt="Solution Execution"
@@ -227,7 +314,7 @@ const CaseStudyDetail = () => {
                     </div>
                 </div>
             </main>
-        </div>
+        </div >
     );
 };
 

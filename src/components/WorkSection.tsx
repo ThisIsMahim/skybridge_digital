@@ -2,11 +2,29 @@ import { useState, useRef, useEffect } from "react";
 
 import ProjectCard from "./ProjectCard";
 import { LiquidDistortion } from "./LiquidDistortion";
-
-import { caseStudies } from "@/data/caseStudies";
+import { API_URL } from "@/config/api";
 
 const WorkSection = () => {
+  const [projects, setProjects] = useState<any[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch(`${API_URL}/projects`);
+        if (response.ok) {
+          const data = await response.json();
+          // Show up to 10 projects, prioritizing featured if you want, but simply taking the most recent (backend sorts by date)
+          // to ensure all uploaded works appear as requested.
+          setProjects(data.slice(0, 10));
+        }
+      } catch (error) {
+        console.error("Failed to fetch projects", error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   return (
     <section
@@ -31,12 +49,12 @@ const WorkSection = () => {
         <div
           className="grid md:grid-cols-2 gap-4 lg:gap-6"
         >
-          {caseStudies.map((project, index) => (
+          {projects.map((project, index) => (
             <ProjectCard
-              key={project.title}
+              key={project._id || index}
               title={project.title}
-              category={project.industry}
-              image={project.image}
+              category={project.industry || project.tags?.[0] || "Web Design"}
+              image={project.imageUrl}
               className="w-full"
             />
           ))}

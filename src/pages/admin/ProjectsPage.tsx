@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, memo } from "react";
-import { Plus, Pencil, Trash2, ExternalLink } from "lucide-react";
+import { Plus, Pencil, Trash2, ExternalLink, Github } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,6 +50,11 @@ const ProjectCard = memo(({ project, onEdit, onDelete }: { project: any, onEdit:
                 </div>
                 <div className="flex justify-between items-center mt-auto pt-2 border-t border-border">
                     <div className="flex gap-2">
+                        {project.repoLink && (
+                            <a href={project.repoLink} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
+                                <Github className="h-4 w-4" />
+                            </a>
+                        )}
                         {project.liveLink && (
                             <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
                                 <ExternalLink className="h-4 w-4" />
