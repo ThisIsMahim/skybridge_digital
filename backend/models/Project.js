@@ -7,70 +7,58 @@ const projectSchema = new mongoose.Schema({
   },
   slug: {
     type: String,
-    required: true,
     unique: true,
+  },
+  description: {
+    type: String,
   },
   client: {
     type: String,
-    required: true,
   },
   industry: {
     type: String,
-    required: true,
-    enum: ["SEO", "Web Design", "Marketing", "Branding"],
+    enum: ["SEO", "Web Design", "Marketing", "Branding", "Fintech", "Health", "Other"], // Added some likely needed ones or just remove enum restrict if strictly needed, but let's keep it loose
   },
   challenge: {
     type: String,
-    required: true,
   },
   solution: {
     type: String,
-    required: true,
   },
   metric: {
     type: String,
-    required: true,
   },
   imageUrl: {
     type: String,
-    required: true,
   },
   challengeImage: {
     type: String,
-    required: true,
   },
   solutionImage: {
     type: String,
-    required: true,
   },
   logo: {
     type: String,
-    required: true,
   },
   summary: {
     type: String,
-    required: true,
   },
   overview: {
     type: String,
-    required: true,
   },
   problemDetail: {
     type: String,
-    required: true,
   },
   approach: {
     type: String,
-    required: true,
   },
   outcome: {
     type: String,
-    required: true,
   },
   testimonial: {
-    quote: { type: String, required: true },
-    author: { type: String, required: true },
-    role: { type: String, required: true },
+    quote: { type: String },
+    author: { type: String },
+    role: { type: String },
   },
   tags: [{
     type: String,
@@ -88,5 +76,18 @@ const projectSchema = new mongoose.Schema({
     default: false,
   },
 }, { timestamps: true });
+
+// Create slug from title if not provided
+projectSchema.pre('save', function (next) {
+  if (this.isModified('title') || this.isNew) {
+    if (!this.slug) {
+      this.slug = this.title
+        .toLowerCase()
+        .replace(/[^\w ]+/g, '')
+        .replace(/ +/g, '-');
+    }
+  }
+  next();
+});
 
 module.exports = mongoose.model('Project', projectSchema);

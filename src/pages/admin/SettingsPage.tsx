@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useState } from "react";
+import { API_URL, getAuthHeader } from "@/config/api";
 
 const AdminSettingsPage = () => {
     // Note: We don't have a change password endpoint yet in backend, but I'll create the UI

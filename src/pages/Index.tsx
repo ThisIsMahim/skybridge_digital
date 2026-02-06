@@ -42,7 +42,7 @@ const Index = () => {
       <Hero />
       <ClientLogos />
       <AboutSection />
-      <TeamSection />
+      <WorkSection />
       <div ref={servicesRef} className="relative z-0" id="services-container">
         <ServicesSection />
       </div>
@@ -50,7 +50,7 @@ const Index = () => {
         <ProcessSection />
       </div>
       <div className="relative z-0 shadow-2xl">
-        <WorkSection />
+        <TeamSection />
       </div>
       <TestimonialsSection />
       <FooterTunnel />

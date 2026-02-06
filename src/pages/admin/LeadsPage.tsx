@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { Copy, Check, Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,66 @@ import { API_URL, getAuthHeader } from "@/config/api";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
+const getStatusVariant = (status: string) => {
+    switch (status) {
+        case "Closed": return "bg-emerald-100 text-emerald-700 border-emerald-200";
+        case "New": return "bg-amber-100 text-amber-700 border-amber-200";
+        case "Contacted": return "bg-sky-100 text-sky-700 border-sky-200";
+        case "Meeting Scheduled": return "bg-purple-100 text-purple-700 border-purple-200";
+        default: return "bg-muted text-muted-foreground";
+    }
+};
+
+const LeadRow = memo(({ lead, onCopy, onUpdateStatus }: { lead: any, onCopy: (text: string) => void, onUpdateStatus: (id: string, val: string) => void }) => {
+    return (
+        <TableRow>
+            <TableCell className="text-muted-foreground text-xs">
+                {new Date(lead.createdAt).toLocaleDateString()} <br />
+                {new Date(lead.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </TableCell>
+            <TableCell className="font-medium">{lead.name}</TableCell>
+            <TableCell>
+                <div className="flex items-center gap-2">
+                    {lead.email}
+                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => onCopy(lead.email)}>
+                        <Copy className="h-3 w-3" />
+                    </Button>
+                </div>
+            </TableCell>
+            <TableCell>
+                {lead.isBookingRequest ? (
+                    <Badge variant="secondary">Booking</Badge>
+                ) : (
+                    <Badge variant="outline">Contact</Badge>
+                )}
+            </TableCell>
+            <TableCell className="max-w-xs truncate" title={lead.message}>
+                {lead.message}
+                {lead.isBookingRequest && (
+                    <div className="text-xs text-muted-foreground mt-1">
+                        Topic: {lead.meetingTopic} <br />
+                        Pref: {new Date(lead.preferredDate).toLocaleDateString()} @ {lead.preferredTimeRange}
+                    </div>
+                )}
+            </TableCell>
+            <TableCell>
+                <Select defaultValue={lead.status} onValueChange={(val) => onUpdateStatus(lead._id, val)}>
+                    <SelectTrigger className={cn("w-[140px] h-8", getStatusVariant(lead.status))}>
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="New">New</SelectItem>
+                        <SelectItem value="Contacted">Contacted</SelectItem>
+                        <SelectItem value="Meeting Scheduled">Meeting Scheduled</SelectItem>
+                        <SelectItem value="Closed">Closed</SelectItem>
+                    </SelectContent>
+                </Select>
+            </TableCell>
+        </TableRow>
+    );
+});
+LeadRow.displayName = "LeadRow";
+
 const AdminLeadsPage = () => {
     const [leads, setLeads] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -44,8 +104,15 @@ const AdminLeadsPage = () => {
         fetchLeads();
     }, []);
 
-    const updateStatus = async (id: string, newStatus: string) => {
+    const updateStatus = useCallback(async (id: string, newStatus: string) => {
         try {
+            // Optimistic update locally first for instant feedback
+            setLeads(currentLeads =>
+                currentLeads.map(lead =>
+                    lead._id === id ? { ...lead, status: newStatus } : lead
+                )
+            );
+
             const res = await fetch(`${API_URL}/leads/${id}`, {
                 method: "PUT",
                 headers: {
@@ -57,29 +124,25 @@ const AdminLeadsPage = () => {
 
             if (res.ok) {
                 toast.success("Status updated");
-                fetchLeads(); // Refresh
+                // No need to fetchLeads() here if we trust the optimistic update, 
+                // but checking consistency is good. 
+                // However, fetching causes a global re-render. 
+                // Let's rely on the optimistic update for "Smoothness"
             } else {
                 toast.error("Failed to update status");
+                // Revert on failure
+                fetchLeads();
             }
         } catch (error) {
             toast.error("Error updating status");
+            fetchLeads();
         }
-    };
+    }, []);
 
-    const copyToClipboard = (text: string) => {
+    const copyToClipboard = useCallback((text: string) => {
         navigator.clipboard.writeText(text);
         toast.success("Copied to clipboard");
-    }
-
-    const getStatusVariant = (status: string) => {
-        switch (status) {
-            case "Closed": return "bg-emerald-100 text-emerald-700 border-emerald-200";
-            case "New": return "bg-amber-100 text-amber-700 border-amber-200";
-            case "Contacted": return "bg-sky-100 text-sky-700 border-sky-200";
-            case "Meeting Scheduled": return "bg-purple-100 text-purple-700 border-purple-200";
-            default: return "bg-muted text-muted-foreground";
-        }
-    };
+    }, []);
 
     return (
         <div className="space-y-6">
@@ -104,50 +167,12 @@ const AdminLeadsPage = () => {
                             </TableHeader>
                             <TableBody>
                                 {leads.map((lead) => (
-                                    <TableRow key={lead._id}>
-                                        <TableCell className="text-muted-foreground text-xs">
-                                            {new Date(lead.createdAt).toLocaleDateString()} <br />
-                                            {new Date(lead.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                        </TableCell>
-                                        <TableCell className="font-medium">{lead.name}</TableCell>
-                                        <TableCell>
-                                            <div className="flex items-center gap-2">
-                                                {lead.email}
-                                                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(lead.email)}>
-                                                    <Copy className="h-3 w-3" />
-                                                </Button>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>
-                                            {lead.isBookingRequest ? (
-                                                <Badge variant="secondary">Booking</Badge>
-                                            ) : (
-                                                <Badge variant="outline">Contact</Badge>
-                                            )}
-                                        </TableCell>
-                                        <TableCell className="max-w-xs truncate" title={lead.message}>
-                                            {lead.message}
-                                            {lead.isBookingRequest && (
-                                                <div className="text-xs text-muted-foreground mt-1">
-                                                    Topic: {lead.meetingTopic} <br />
-                                                    Pref: {new Date(lead.preferredDate).toLocaleDateString()} @ {lead.preferredTimeRange}
-                                                </div>
-                                            )}
-                                        </TableCell>
-                                        <TableCell>
-                                            <Select defaultValue={lead.status} onValueChange={(val) => updateStatus(lead._id, val)}>
-                                                <SelectTrigger className={cn("w-[140px] h-8", getStatusVariant(lead.status))}>
-                                                    <SelectValue />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="New">New</SelectItem>
-                                                    <SelectItem value="Contacted">Contacted</SelectItem>
-                                                    <SelectItem value="Meeting Scheduled">Meeting Scheduled</SelectItem>
-                                                    <SelectItem value="Closed">Closed</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </TableCell>
-                                    </TableRow>
+                                    <LeadRow
+                                        key={lead._id}
+                                        lead={lead}
+                                        onCopy={copyToClipboard}
+                                        onUpdateStatus={updateStatus}
+                                    />
                                 ))}
                                 {leads.length === 0 && (
                                     <TableRow>

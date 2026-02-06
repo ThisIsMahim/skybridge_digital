@@ -73,7 +73,7 @@ const ImageUpload = ({ value, onChange, label = "Upload Image", className }: Ima
                 </div>
             ) : (
                 <div
-                    className="border-2 border-dashed border-border rounded-md p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-muted/50 transition-colors h-32 w-full max-w-[300px]"
+                    className="border-2 border-dashed border-border rounded-md p-2 flex flex-col items-center justify-center cursor-pointer hover:bg-muted/50 transition-colors h-24 w-full"
                     onClick={() => fileInputRef.current?.click()}
                 >
                     <input
@@ -84,14 +84,14 @@ const ImageUpload = ({ value, onChange, label = "Upload Image", className }: Ima
                         onChange={handleFileChange}
                     />
                     {uploading ? (
-                        <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                            <Loader2 className="h-6 w-6 animate-spin" />
-                            <span className="text-xs">Uploading...</span>
+                        <div className="flex flex-col items-center gap-1 text-muted-foreground">
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <span className="text-[10px]">Uploading...</span>
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                            <Upload className="h-6 w-6" />
-                            <span className="text-xs">Click to upload</span>
+                        <div className="flex flex-col items-center gap-1 text-muted-foreground">
+                            <Upload className="h-4 w-4" />
+                            <span className="text-[10px] text-center">Click to upload</span>
                         </div>
                     )}
                 </div>

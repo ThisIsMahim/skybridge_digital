@@ -76,10 +76,10 @@ const Contact = () => {
 
     return (
         <PageTransition>
-            <div className="min-h-screen bg-black text-white flex flex-col font-sans selection:bg-accent selection:text-black overflow-hidden relative">
+            <div className="min-h-screen bg-black text-white flex flex-col font-sans selection:bg-accent selection:text-black overflow-x-hidden relative">
                 <Navbar />
 
-                <main className="flex-grow flex items-center justify-center relative z-10 w-full px-4 md:px-6 lg:px-8 pt-32 pb-12 lg:py-0 min-h-screen">
+                <main className="flex-grow flex items-center justify-center relative z-10 w-full px-4 md:px-6 lg:px-8 pt-32 pb-24 lg:py-24 min-h-screen">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start lg:items-center w-full max-w-6xl 2xl:max-w-[80%] mx-auto">
 
                         {/* Left Column: Info */}

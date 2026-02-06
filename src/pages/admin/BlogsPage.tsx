@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { Plus, Pencil, Trash2, Eye } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,36 @@ import { API_URL, getAuthHeader } from "@/config/api";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import ImageUpload from "@/components/admin/ImageUpload";
+
+const BlogRow = memo(({ blog, onEdit, onDelete }: { blog: any, onEdit: (b: any) => void, onDelete: (id: string) => void }) => {
+    return (
+        <Card className="p-4 flex items-center justify-between">
+            <div className="flex gap-4 items-center">
+                <div className="h-16 w-24 bg-muted rounded overflow-hidden">
+                    {blog.coverImage ? (
+                        <img src={blog.coverImage} alt="" loading="lazy" className="w-full h-full object-cover" />
+                    ) : (
+                        <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">No Image</div>
+                    )}
+                </div>
+                <div>
+                    <h3 className="font-semibold text-lg">{blog.title}</h3>
+                    <div className="flex items-center gap-2 mt-1">
+                        <Badge variant={blog.isPublished ? "default" : "secondary"}>
+                            {blog.isPublished ? "Published" : "Draft"}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">{new Date(blog.createdAt).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            </div>
+            <div className="flex gap-2">
+                <Button variant="ghost" size="icon" onClick={() => onEdit(blog)}><Pencil className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" className="text-destructive" onClick={() => onDelete(blog._id)}><Trash2 className="h-4 w-4" /></Button>
+            </div>
+        </Card>
+    );
+});
+BlogRow.displayName = "BlogRow";
 
 const AdminBlogsPage = () => {
     const [blogs, setBlogs] = useState<any[]>([]);
@@ -54,7 +84,7 @@ const AdminBlogsPage = () => {
         fetchBlogs();
     }, []);
 
-    const handleOpenDialog = (blog: any = null) => {
+    const handleOpenDialog = useCallback((blog: any = null) => {
         if (blog) {
             setEditingBlog(blog);
             setFormData({
@@ -79,7 +109,7 @@ const AdminBlogsPage = () => {
             });
         }
         setIsDialogOpen(true);
-    };
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -114,7 +144,7 @@ const AdminBlogsPage = () => {
         }
     };
 
-    const handleDelete = async (id: string) => {
+    const handleDelete = useCallback(async (id: string) => {
         if (!confirm("Are you sure you want to delete this post?")) return;
         try {
             const res = await fetch(`${API_URL}/blogs/${id}`, {
@@ -123,12 +153,13 @@ const AdminBlogsPage = () => {
             });
             if (res.ok) {
                 toast.success("Blog deleted");
-                fetchBlogs();
+                // Optimistic update
+                setBlogs(prev => prev.filter(b => b._id !== id));
             }
         } catch (error) {
             toast.error("Error deleting blog");
         }
-    };
+    }, []);
 
     return (
         <div className="space-y-6">
@@ -221,30 +252,12 @@ const AdminBlogsPage = () => {
             ) : (
                 <div className="space-y-4">
                     {blogs.map((blog) => (
-                        <Card key={blog._id} className="p-4 flex items-center justify-between">
-                            <div className="flex gap-4 items-center">
-                                <div className="h-16 w-24 bg-muted rounded overflow-hidden">
-                                    {blog.coverImage ? (
-                                        <img src={blog.coverImage} alt="" className="w-full h-full object-cover" />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">No Image</div>
-                                    )}
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-lg">{blog.title}</h3>
-                                    <div className="flex items-center gap-2 mt-1">
-                                        <Badge variant={blog.isPublished ? "default" : "secondary"}>
-                                            {blog.isPublished ? "Published" : "Draft"}
-                                        </Badge>
-                                        <span className="text-xs text-muted-foreground">{new Date(blog.createdAt).toLocaleDateString()}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex gap-2">
-                                <Button variant="ghost" size="icon" onClick={() => handleOpenDialog(blog)}><Pencil className="h-4 w-4" /></Button>
-                                <Button variant="ghost" size="icon" className="text-destructive" onClick={() => handleDelete(blog._id)}><Trash2 className="h-4 w-4" /></Button>
-                            </div>
-                        </Card>
+                        <BlogRow
+                            key={blog._id}
+                            blog={blog}
+                            onEdit={handleOpenDialog}
+                            onDelete={handleDelete}
+                        />
                     ))}
                     {blogs.length === 0 && <div className="text-center text-muted-foreground py-10">No blogs posts found.</div>}
                 </div>

@@ -5,6 +5,7 @@ import WorkGridCard from "@/components/WorkGridCard";
 import { caseStudies } from "@/data/caseStudies";
 import { motion, AnimatePresence } from "framer-motion";
 
+
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -61,18 +62,23 @@ const CaseStudies = () => {
 
     return (
         <div className="min-h-screen bg-background text-foreground selection:bg-accent selection:text-accent-foreground">
+            {/* Optimized Static Noise Overlay - Performance friendly */}
+            <div
+                className="fixed inset-0 opacity-[0.05] pointer-events-none z-0 mix-blend-overlay"
+                style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                    backgroundRepeat: 'repeat',
+                }}
+            />
+
             <Navbar />
 
-            <main className="pt-32 pb-20 overflow-hidden">
+            <main className="pt-32 pb-20 overflow-hidden relative z-10">
                 <div className="w-full px-6 lg:px-12 xl:px-20 container mx-auto">
 
                     {/* 1. Header & Navigation */}
-                    <header className="mb-16 lg:mb-24 text-center max-w-4xl mx-auto">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                        >
+                    <header className="mb-16 lg:mb-24 text-center max-w-4xl mx-auto opacity-0 animate-fade-in [animation-delay:0.2s] will-change-transform">
+                        <div>
                             <span className="block text-accent text-xs font-bold tracking-[0.3em] uppercase mb-6 opacity-80">
                                 Our Portfolio
                             </span>
@@ -84,12 +90,12 @@ const CaseStudies = () => {
                             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto font-medium">
                                 Explore our gallery of success stories. We help businesses across industries achieve measurable, exponential growth.
                             </p>
-                        </motion.div>
+                        </div>
                     </header>
 
                     {/* 2. Strategic Filtering */}
                     <nav className="mb-16 flex flex-wrap justify-center gap-3 lg:gap-4 sticky top-24 z-30 py-4 pointer-events-none">
-                        <div className="flex flex-wrap justify-center gap-3 bg-black/40 backdrop-blur-xl border border-white/10 p-2 rounded-full pointer-events-auto shadow-2xl">
+                        <div className="flex flex-wrap justify-center gap-3 bg-black/60 backdrop-blur-md border border-white/10 p-2 rounded-full pointer-events-auto shadow-2xl">
                             {categories.map((cat) => (
                                 <button
                                     key={cat}
@@ -120,18 +126,19 @@ const CaseStudies = () => {
                         variants={containerVariants}
                         initial="hidden"
                         animate="visible"
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 lg:gap-y-24 mb-32"
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 lg:gap-y-24 mb-32 will-change-transform"
                     >
                         <AnimatePresence mode="popLayout">
                             {filteredProjects.map((project) => (
                                 <motion.div
-                                    layout="position"
+                                    layout
                                     key={project.id}
                                     variants={itemVariants}
                                     initial="hidden"
                                     animate="visible"
                                     exit="exit"
                                     className="will-change-transform"
+                                    transition={{ duration: 0.4, ease: "easeOut" }}
                                 >
                                     <WorkGridCard project={project} />
                                 </motion.div>
